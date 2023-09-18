@@ -9,13 +9,13 @@ number:
 date:
 consensus: true
 v: 3
-workgroup: Usable Formal Methods Research Group
+workgroup: "Usable Formal Methods Proposed Research Group"
 venue:
-  group: UFMRG
-  type: Research Group
-  mail: ufmrg@irtf.org
-  arch: https://mailarchive.ietf.org/arch/browse/ufmrg
-  github: cfm/draft-mt-ufmrg-teep-sample
+  group: "Usable Formal Methods Proposed Research Group"
+  type: "Research Group"
+  mail: "ufmrg@irtf.org"
+  arch: "https://mailarchive.ietf.org/arch/browse/ufmrg"
+  github: "cfm/draft-mt-ufmrg-teep-sample"
 
 author:
  - fullname: Cory Myers
