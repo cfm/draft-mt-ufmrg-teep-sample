@@ -19,35 +19,29 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
+title: "A Usable Formal Methods Sample Problem from TEEP"
+abbrev: "TEEP Sample"
 category: info
 
-docname: draft-todo-yourname-protocol-latest
-submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
+docname: draft-mt-ufmrg-teep-sample-latest
+submissiontype: IRTF
 number:
 date:
 consensus: true
 v: 3
-area: AREA
-workgroup: WG Working Group
-keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+workgroup: Usable Formal Methods Research Group
 venue:
-  group: WG
-  type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+  group: UFMRG
+  type: Research Group
+  mail: ufmrg@irtf.org
+  arch: https://mailarchive.ietf.org/arch/browse/ufmrg
+  github: cfm/draft-mt-ufmrg-teep-sample
 
 author:
- -
-    fullname: Your Name Here
-    organization: Your Organization Here
-    email: your.email@example.com
+ - fullname: Cory Myers
+   email: cfm@acm.org
+ - fullname: Hannes Tschofenig
+   email: hannes.tschofenig@gmx.net
 
 normative:
 
