@@ -18,19 +18,44 @@ venue:
   github: "cfm/draft-mt-ufmrg-teep-sample"
 
 author:
- - fullname: Cory Myers
+ - ins: C. Myers
+   fullname: Cory Myers
    email: cfm@acm.org
- - fullname: Hannes Tschofenig
+ - ins: H. Tschofenig
+   fullname: Hannes Tschofenig
    email: hannes.tschofenig@gmx.net
 
 normative:
 
 informative:
+  draft-farrell-ufmrg-sample:
+    title: Usable Formal Methods Sample Problems
+    target: https://datatracker.ietf.org/doc/draft-farrell-ufmrg-sample/
+    author:
+      name: Stephen Farrell
+    date: 2023-06-19
+  suit:
+    title: Software Updates for the Internet of Things
+    target: https://datatracker.ietf.org/wg/suit/about/
+    author:
+      organization: IETF
+    date: 2023
+  teep:
+    title: Trusted Execution Environment Provisioning
+    target: https://datatracker.ietf.org/wg/teep/about/
+    author:
+      organization: IETF
+    date: 2023
+
 
 
 --- abstract
 
-TODO Abstract
+This draft follows the invitation of {{draft-farrell-ufmrg-sample}} to propose
+another sample problem for demonstration, training, and evaluation of formal
+methods in IETF work.  It draws on recent work from the {{suit}} and {{teep}}
+working groups to define a sample modeling problem for a novel rather than a
+familiar IETF protocol.
 
 
 --- middle
