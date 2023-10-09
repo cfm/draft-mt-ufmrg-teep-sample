@@ -5,7 +5,7 @@
 Usable Formal Methods Proposed Research Group                   C. Myers
 Internet-Draft                                                          
 Intended status: Informational                             H. Tschofenig
-Expires: 21 March 2024                                 18 September 2023
+Expires: 11 April 2024                                    9 October 2023
 
 
             A Usable Formal Methods Sample Problem from TEEP
@@ -13,7 +13,11 @@ Expires: 21 March 2024                                 18 September 2023
 
 Abstract
 
-   TODO Abstract
+   This draft follows the invitation of [draft-farrell-ufmrg-sample] to
+   propose another sample problem for demonstration, training, and
+   evaluation of formal methods in IETF work.  It draws on recent work
+   from the [suit] and {[teep]} working groups to define a sample
+   modeling problem for a novel rather than a familiar IETF protocol.
 
 About This Document
 
@@ -46,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 March 2024.
+   This Internet-Draft will expire on 11 April 2024.
 
 Copyright Notice
 
@@ -65,7 +69,9 @@ Table of Contents
    2.  Conventions and Definitions
    3.  Security Considerations
    4.  IANA Considerations
-   5.  Normative References
+   5.  References
+     5.1.  Normative References
+     5.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -89,7 +95,9 @@ Table of Contents
 
    This document has no IANA actions.
 
-5.  Normative References
+5.  References
+
+5.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -99,6 +107,19 @@ Table of Contents
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+5.2.  Informative References
+
+   [draft-farrell-ufmrg-sample]
+              Farrell, S., "Usable Formal Methods Sample Problems", 19
+              June 2023, <https://datatracker.ietf.org/doc/draft-
+              farrell-ufmrg-sample/>.
+
+   [suit]     IETF, "Software Updates for the Internet of Things", 2023,
+              <https://datatracker.ietf.org/wg/suit/about/>.
+
+   [teep]     IETF, "Trusted Execution Environment Provisioning", 2023,
+              <https://datatracker.ietf.org/wg/teep/about/>.
 
 Acknowledgments
 
