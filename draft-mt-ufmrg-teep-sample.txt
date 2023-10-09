@@ -16,8 +16,8 @@ Abstract
    This draft follows the invitation of [draft-farrell-ufmrg-sample] to
    propose another sample problem for demonstration, training, and
    evaluation of formal methods in IETF work.  It draws on recent work
-   from the [suit] and {[teep]} working groups to define a sample
-   modeling problem for a novel rather than a familiar IETF protocol.
+   from the [suit] and [teep] working groups to define a sample modeling
+   problem for a novel rather than a familiar IETF protocol.
 
 About This Document
 
