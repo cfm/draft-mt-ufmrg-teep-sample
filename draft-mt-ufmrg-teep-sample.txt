@@ -69,17 +69,11 @@ Table of Contents
    1.  Introduction
    2.  Conventions and Definitions
    3.  The Trusted Execution Environment Provisioning (TEEP) Protocol
-   4.  TAM -> Attester: Get Evidence (Challenge)
-   5.  TAM <- Attester: Evidence(Challenge)
-   6.  TAM <- TEEP Agent: QueryResponse
-   7.  Author -> TAM: Software
-   8.  TAM -> TEEP Agent: Update
-   9.  TAM <- TEEP Agent: Success
-   10. Security Considerations
-   11. IANA Considerations
-   12. References
-     12.1.  Normative References
-     12.2.  Informative References
+   4.  Security Considerations
+   5.  IANA Considerations
+   6.  References
+     6.1.  Normative References
+     6.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -122,47 +116,43 @@ Table of Contents
    communication is relayed by an _untrusted_ TEEP Broker [RFC9397]
    (Section 6.1).
 
-   ``` # TAM -> TEEP Agent: QueryRequest {token, challenge, supported-
-   teep-cipher-suites, supported-suit-cose-profiles, data-item-
-   requested(trusted-components, attestation)}SK_TAM
+   # TAM -> TEEP Agent: QueryRequest
+   {token, challenge, supported-teep-cipher-suites,
+   supported-suit-cose-profiles, data-item-requested(trusted-components,
+   attestation)}SK_TAM
 
-4.  TAM -> Attester: Get Evidence (Challenge)
-
+   # TAM -> Attester: Get Evidence (Challenge)
    Challenge
 
-5.  TAM <- Attester: Evidence(Challenge)
-
+   # TAM <- Attester: Evidence(Challenge)
    {Challenge, Claims}SK_Attester
 
-6.  TAM <- TEEP Agent: QueryResponse
-
+   # TAM <- TEEP Agent: QueryResponse
    {token, selected-teep-cipher-suite, attestation-payload-format(EAT),
    attestation-payload({Challenge, Claims}SK_Attester),tc-list,
    requested-tc-list, requested-tc-list}SK_AGENT
 
-7.  Author -> TAM: Software
 
+   # Author -> TAM: Software
    {manifest, sequence_nr, software}SK_AUTHOR
 
-8.  TAM -> TEEP Agent: Update
-
+   # TAM -> TEEP Agent: Update
    {token', {manifest, sequence_nr, software}SK_AUTHOR}SK_TAM
 
-9.  TAM <- TEEP Agent: Success
+   # TAM <- TEEP Agent: Success
+   {token'}SK_AGENT
 
-   {token'}SK_AGENT ```
-
-10.  Security Considerations
+4.  Security Considerations
 
    TODO Security
 
-11.  IANA Considerations
+5.  IANA Considerations
 
    This document has no IANA actions.
 
-12.  References
+6.  References
 
-12.1.  Normative References
+6.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -173,7 +163,7 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-12.2.  Informative References
+6.2.  Informative References
 
    [draft-farrell-ufmrg-sample]
               Farrell, S., "Usable Formal Methods Sample Problems", 19
