@@ -97,6 +97,42 @@ problem for slightly different reasons than those proposed in
 {::boilerplate bcp14-tagged}
 
 
+# The Trusted Execution Environment Provisioning (TEEP) Protocol
+
+The Trusted Execution Environment Provisioning protocol {{teep-protocol}}
+specifies communication between a Trusted Application Manager
+{{?RFC9397 (Section 2)}} and a TEEP agent.  Importantly, this communication is
+relayed by an *untrusted* TEEP Broker {{?RFC9397 (Section 6.1)}}.
+
+~~~
+# TAM -> TEEP Agent: QueryRequest
+{token, challenge, supported-teep-cipher-suites,
+supported-suit-cose-profiles, data-item-requested(trusted-components,
+attestation)}SK_TAM
+
+# TAM -> Attester: Get Evidence (Challenge)
+Challenge
+
+# TAM <- Attester: Evidence(Challenge)
+{Challenge, Claims}SK_Attester
+
+# TAM <- TEEP Agent: QueryResponse
+{token, selected-teep-cipher-suite, attestation-payload-format(EAT),
+attestation-payload({Challenge, Claims}SK_Attester),tc-list,
+requested-tc-list, requested-tc-list}SK_AGENT
+
+
+# Author -> TAM: Software
+{manifest, sequence_nr, software}SK_AUTHOR
+
+# TAM -> TEEP Agent: Update
+{token', {manifest, sequence_nr, software}SK_AUTHOR}SK_TAM
+
+# TAM <- TEEP Agent: Success
+{token'}SK_AGENT
+~~~
+
+
 # Security Considerations
 
 TODO Security
