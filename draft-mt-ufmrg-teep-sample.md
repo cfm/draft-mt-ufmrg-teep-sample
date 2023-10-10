@@ -168,7 +168,9 @@ Any formal model of TEEP should be able to prove this replay protection.
 
 # Security Considerations
 
-TODO Security
+This document has no security considerations of its own, although it may
+contribute indirectly to the development of new security considerations
+for the TEEP protocol.
 
 
 # IANA Considerations
