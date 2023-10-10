@@ -224,7 +224,7 @@ Table of Contents
               <https://datatracker.ietf.org/wg/suit/about/>.
 
    [suit-interim]
-              Thaler, D., "interim-2023-suit-01", n.d.,
+              Thaler, D., "interim-2023-suit-01", 11 September 2023,
               <https://datatracker.ietf.org/doc/agenda-interim-2023-
               suit-01-sessa/>.
 
@@ -232,9 +232,9 @@ Table of Contents
               <https://datatracker.ietf.org/wg/teep/about/>.
 
    [thaler]   Thaler, D., "TEEP Protocol: draft-ietf-teep-protocol-16",
-              n.d., <https://datatracker.ietf.org/meeting/interim-2023-
-              suit-01/materials/slides-interim-2023-suit-01-sessa-teep-
-              protocol-00.pdf>.
+              11 September 2023, <https://datatracker.ietf.org/meeting/
+              interim-2023-suit-01/materials/slides-interim-2023-suit-
+              01-sessa-teep-protocol-00.pdf>.
 
 Authors' Addresses
 
