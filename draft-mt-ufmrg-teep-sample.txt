@@ -13,7 +13,7 @@ Expires: 12 April 2024                                   10 October 2023
 
 Abstract
 
-   This draft follows the invitation of [draft-farrell-ufmrg-sample] to
+   This draft follows the invitation of [I-D.farrell-ufmrg-sample] to
    propose another sample problem for demonstration, training, and
    evaluation of formal methods in IETF work.  It draws on recent work
    from the Software Updates for the Internet of Things [suit] and
@@ -69,20 +69,20 @@ Table of Contents
    1.  Introduction
    2.  Conventions and Definitions
    3.  The Trusted Execution Environment Provisioning (TEEP) Protocol
+     3.1.  Security Properties
    4.  Security Considerations
    5.  IANA Considerations
    6.  References
      6.1.  Normative References
      6.2.  Informative References
-   Acknowledgments
    Authors' Addresses
 
 1.  Introduction
 
    In this draft we take the Trusted Execution Environment Provisioning
-   protocol [teep-protocol] to be a good domain from which to draw a
-   sample modeling problem for slightly different reasons than those
-   proposed in [draft-farrell-ufmrg-sample].
+   protocol [I-D.ietf-teep-protocol] to be a good domain from which to
+   draw a sample modeling problem for slightly different reasons than
+   those proposed in [I-D.farrell-ufmrg-sample].
 
    1.  TEEP is a proposed standard under active development, at working-
        group consensus as of this writing.  Formal modeling, even for
@@ -97,7 +97,7 @@ Table of Contents
    3.  The TEEP protocol has well-defined use cases and includes
        provisions for constrained environments.  Modeling the entire
        protocol is a reasonble learning or training exercise, whereas
-       [draft-farrell-ufmrg-sample] limits itself to just the SEARCH
+       [I-D.farrell-ufmrg-sample] limits itself to just the SEARCH
        command of [RFC9051].
 
 2.  Conventions and Definitions
@@ -111,10 +111,10 @@ Table of Contents
 3.  The Trusted Execution Environment Provisioning (TEEP) Protocol
 
    The Trusted Execution Environment Provisioning protocol
-   [teep-protocol] specifies communication between a Trusted Application
-   Manager [RFC9397] (Section 2) and a TEEP agent.  Importantly, this
-   communication is relayed by an _untrusted_ TEEP Broker [RFC9397]
-   (Section 6.1).
+   [I-D.ietf-.teep-protocol] specifies communication between a Trusted
+   Application Manager [RFC9397] (Section 2) and a TEEP agent.
+   Importantly, this communication is relayed by an _untrusted_ TEEP
+   Broker [RFC9397] (Section 6.1).
 
    # TAM -> TEEP Agent: QueryRequest
    {token, challenge, supported-teep-cipher-suites,
@@ -142,9 +142,39 @@ Table of Contents
    # TAM <- TEEP Agent: Success
    {token'}SK_AGENT
 
+3.1.  Security Properties
+
+   At the [suit-interim] meeting, the following editorial addition was
+   proposed [thaler] in TEEP's security consideration (Section 10 of
+   [I-D.ietf-teep-protocol]):
+
+      The TEEP protocol supports replay protection as follows.  The
+      transport protocol under the TEEP protocol might provide replay
+      protection, but may be terminated in the TEEP Broker which is not
+      trusted by the TEEP Agent and so the TEEP protocol does replay
+      protection itself.  If attestation of the TAM is used, the
+      attestation freshness mechanism provides replay protection for
+      attested QueryRequest messages.  If non-attested QueryRequest
+      messages are replayed, the TEEP Agent will generate QueryResponse
+      or Error messages, but the REE can already conduct Denial of
+      Service attacks against the TEE and/or the TAM even without the
+      TEEP protocol.  QueryResponse messages have replay protection via
+      attestation freshness mechanism, or the token field in the message
+      if attestation is not used.  Update messages have replay
+      protection via the suit-manifest-sequence-number (see
+      Section 8.4.2 of [I-D.ietf-suit-manifest]).  Error and Success
+      messages have replay protection via SUIT Reports and/or the token
+      field in the message, where a TAM can detect which message it is
+      in response to.
+
+   Any formal model of TEEP should be able to prove this replay
+   protection.
+
 4.  Security Considerations
 
-   TODO Security
+   This document has no security considerations of its own, although it
+   may contribute indirectly to the development of new security
+   considerations for the TEEP protocol.
 
 5.  IANA Considerations
 
@@ -165,10 +195,23 @@ Table of Contents
 
 6.2.  Informative References
 
-   [draft-farrell-ufmrg-sample]
-              Farrell, S., "Usable Formal Methods Sample Problems", 19
-              June 2023, <https://datatracker.ietf.org/doc/draft-
-              farrell-ufmrg-sample/>.
+   [I-D.farrell-ufmrg-sample]
+              Farrell, S., "Usable Formal Methods Research Group Sample
+              Problems", Work in Progress, Internet-Draft, draft-
+              farrell-ufmrg-sample-00, 19 June 2023,
+              <https://datatracker.ietf.org/doc/html/draft-farrell-
+              ufmrg-sample-00>.
+
+   [I-D.ietf-.teep-protocol]
+              "*** BROKEN REFERENCE ***".
+
+   [I-D.ietf-teep-protocol]
+              Tschofenig, H., Pei, M., Wheeler, D. M., Thaler, D., and
+              A. Tsukamoto, "Trusted Execution Environment Provisioning
+              (TEEP) Protocol", Work in Progress, Internet-Draft, draft-
+              ietf-teep-protocol-16, 5 September 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-teep-
+              protocol-16>.
 
    [RFC9051]  Melnikov, A., Ed. and B. Leiba, Ed., "Internet Message
               Access Protocol (IMAP) - Version 4rev2", RFC 9051,
@@ -183,19 +226,18 @@ Table of Contents
    [suit]     IETF, "Software Updates for the Internet of Things", 2023,
               <https://datatracker.ietf.org/wg/suit/about/>.
 
+   [suit-interim]
+              Thaler, D., "interim-2023-suit-01", n.d.,
+              <https://datatracker.ietf.org/doc/agenda-interim-2023-
+              suit-01-sessa/>.
+
    [teep]     IETF, "Trusted Execution Environment Provisioning", 2023,
               <https://datatracker.ietf.org/wg/teep/about/>.
 
-   [teep-protocol]
-              Tschofenig, H., Pei, M., Wheeler, D., Thaler, D., and A.
-              Tskukamoto, "Trusted Execution Environment Provisioning
-              (TEEP) Protocool", 5 September 2023,
-              <https://datatracker.ietf.org/doc/draft-ietf-teep-
-              protocol/>.
-
-Acknowledgments
-
-   TODO acknowledge.
+   [thaler]   Thaler, D., "TEEP Protocol: draft-ietf-teep-protocol-16",
+              n.d., <https://datatracker.ietf.org/meeting/interim-2023-
+              suit-01/materials/slides-interim-2023-suit-01-sessa-teep-
+              protocol-00.pdf>.
 
 Authors' Addresses
 
