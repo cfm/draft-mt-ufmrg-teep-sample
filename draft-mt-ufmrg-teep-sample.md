@@ -40,6 +40,16 @@ informative:
     author:
       organization: IETF
     date: 2023
+  suit-interim:
+    title: interim-2023-suit-01
+    target: https://datatracker.ietf.org/doc/agenda-interim-2023-suit-01-sessa/
+    author:
+      name: Dave Thaler
+  thaler:
+    title: "TEEP Protocol: draft-ietf-teep-protocol-16"
+    target: https://datatracker.ietf.org/meeting/interim-2023-suit-01/materials/slides-interim-2023-suit-01-sessa-teep-protocol-00.pdf
+    author:
+      name: Dave Thaler
   teep:
     title: Trusted Execution Environment Provisioning
     target: https://datatracker.ietf.org/wg/teep/about/
@@ -131,6 +141,29 @@ requested-tc-list, requested-tc-list}SK_AGENT
 # TAM <- TEEP Agent: Success
 {token'}SK_AGENT
 ~~~
+
+## Security Properties
+
+At the {{suit-interim}} meeting, the following editorial addition was proposed
+{{thaler}} in TEEP's security consideration ({{Section 10 of teep-protocol}}):
+
+>  The TEEP protocol supports replay protection as follows. The transport
+> protocol under the TEEP protocol might provide replay protection, but may be
+> terminated in the TEEP Broker which is not trusted by the TEEP Agent and so the
+> TEEP protocol does replay protection itself. If attestation of the TAM is used,
+> the attestation freshness mechanism provides replay protection for attested
+> QueryRequest messages. If non-attested QueryRequest messages are replayed, the
+> TEEP Agent will generate QueryResponse or Error messages, but the REE can
+> already conduct Denial of Service attacks against the TEE and/or the TAM even
+> without the TEEP protocol. QueryResponse messages have replay protection via
+> attestation freshness mechanism, or the token field in the message if
+> attestation is not used. Update messages have replay protection via the
+> suit-manifest-sequence-number (see Section 8.4.2 of [I-D.ietf-suit-manifest]).
+> Error and Success messages have replay protection via SUIT Reports and/or the
+> token field in the message, where a TAM can detect which message it is in
+> response to.
+
+Any formal model of TEEP should be able to prove this replay protection.
 
 
 # Security Considerations
