@@ -150,7 +150,7 @@ Table of Contents
 
 9.  TAM <- TEEP Agent: Success
 
-   {token'}SK_AGENT ``````
+   {token'}SK_AGENT ```
 
 10.  Security Considerations
 
