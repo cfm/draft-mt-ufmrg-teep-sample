@@ -18,7 +18,7 @@ subject to a Simplified BSD License) in Contributions.
 ## Working Group Information
 
 Discussion of this work occurs on the [Usable Formal Methods Proposed Research Group
-Research Group mailing list](mailto:ufmrg@irtf.org)
+mailing list](mailto:ufmrg@irtf.org)
 ([archive](https://mailarchive.ietf.org/arch/browse/ufmrg),
 [subscribe](https://www.irtf.org/mailman/listinfo/ufmrg)).
 In addition to contributions in GitHub, you are encouraged to participate in

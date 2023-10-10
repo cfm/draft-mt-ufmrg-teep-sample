@@ -11,7 +11,7 @@ consensus: true
 v: 3
 workgroup: "Usable Formal Methods Proposed Research Group"
 venue:
-  group: "Usable Formal Methods Proposed Research Group"
+  group: "Usable Formal Methods"
   type: "Research Group"
   mail: "ufmrg@irtf.org"
   arch: "https://mailarchive.ietf.org/arch/browse/ufmrg"
