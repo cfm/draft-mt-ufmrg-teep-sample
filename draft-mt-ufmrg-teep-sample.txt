@@ -29,10 +29,9 @@ About This Document
    https://datatracker.ietf.org/doc/draft-mt-ufmrg-teep-sample/.
 
    Discussion of this document takes place on the Usable Formal Methods
-   Proposed Research Group Research Group mailing list
-   (mailto:ufmrg@irtf.org), which is archived at
-   https://mailarchive.ietf.org/arch/browse/ufmrg.  Subscribe at
-   https://www.ietf.org/mailman/listinfo/ufmrg/.
+   Research Group mailing list (mailto:ufmrg@irtf.org), which is
+   archived at https://mailarchive.ietf.org/arch/browse/ufmrg.
+   Subscribe at https://www.ietf.org/mailman/listinfo/ufmrg/.
 
    Source for this draft and an issue tracker can be found at
    https://github.com/cfm/draft-mt-ufmrg-teep-sample.
