@@ -111,7 +111,7 @@ Table of Contents
 3.  The Trusted Execution Environment Provisioning (TEEP) Protocol
 
    The Trusted Execution Environment Provisioning protocol
-   [I-D.ietf-.teep-protocol] specifies communication between a Trusted
+   [I-D.ietf-teep-protocol] specifies communication between a Trusted
    Application Manager [RFC9397] (Section 2) and a TEEP agent.
    Importantly, this communication is relayed by an _untrusted_ TEEP
    Broker [RFC9397] (Section 6.1).
@@ -201,9 +201,6 @@ Table of Contents
               farrell-ufmrg-sample-00, 19 June 2023,
               <https://datatracker.ietf.org/doc/html/draft-farrell-
               ufmrg-sample-00>.
-
-   [I-D.ietf-.teep-protocol]
-              "*** BROKEN REFERENCE ***".
 
    [I-D.ietf-teep-protocol]
               Tschofenig, H., Pei, M., Wheeler, D. M., Thaler, D., and
