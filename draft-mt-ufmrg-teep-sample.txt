@@ -69,11 +69,18 @@ Table of Contents
 
    1.  Introduction
    2.  Conventions and Definitions
-   3.  Security Considerations
-   4.  IANA Considerations
-   5.  References
-     5.1.  Normative References
-     5.2.  Informative References
+   3.  The Trusted Execution Environment Provisioning (TEEP) Protocol
+   4.  TAM -> Attester: Get Evidence (Challenge)
+   5.  TAM <- Attester: Evidence(Challenge)
+   6.  TAM <- TEEP Agent: QueryResponse
+   7.  Author -> TAM: Software
+   8.  TAM -> TEEP Agent: Update
+   9.  TAM <- TEEP Agent: Success
+   10. Security Considerations
+   11. IANA Considerations
+   12. References
+     12.1.  Normative References
+     12.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -96,8 +103,9 @@ Table of Contents
 
    3.  The TEEP protocol has well-defined use cases and includes
        provisions for constrained environments.  Modeling the entire
-       protocol is a reasonble learning or training exercise, in
-       contrast to just the SEARCH command of [RFC9051].
+       protocol is a reasonble learning or training exercise, whereas
+       [draft-farrell-ufmrg-sample] limits itself to just the SEARCH
+       command of [RFC9051].
 
 2.  Conventions and Definitions
 
@@ -107,17 +115,55 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-3.  Security Considerations
+3.  The Trusted Execution Environment Provisioning (TEEP) Protocol
+
+   The Trusted Execution Environment Provisioning protocol
+   [teep-protocol] specifies communication between a Trusted Application
+   Manager [RFC9397] (Section 2) and a TEEP agent.  Importantly, this
+   communication is relayed by an _untrusted_ TEEP Broker [RFC9397]
+   (Section 6.1).
+
+   ``` # TAM -> TEEP Agent: QueryRequest {token, challenge, supported-
+   teep-cipher-suites, supported-suit-cose-profiles, data-item-
+   requested(trusted-components, attestation)}SK_TAM
+
+4.  TAM -> Attester: Get Evidence (Challenge)
+
+   Challenge
+
+5.  TAM <- Attester: Evidence(Challenge)
+
+   {Challenge, Claims}SK_Attester
+
+6.  TAM <- TEEP Agent: QueryResponse
+
+   {token, selected-teep-cipher-suite, attestation-payload-format(EAT),
+   attestation-payload({Challenge, Claims}SK_Attester),tc-list,
+   requested-tc-list, requested-tc-list}SK_AGENT
+
+7.  Author -> TAM: Software
+
+   {manifest, sequence_nr, software}SK_AUTHOR
+
+8.  TAM -> TEEP Agent: Update
+
+   {token', {manifest, sequence_nr, software}SK_AUTHOR}SK_TAM
+
+9.  TAM <- TEEP Agent: Success
+
+   {token'}SK_AGENT ``````
+
+10.  Security Considerations
 
    TODO Security
 
-4.  IANA Considerations
+11.  IANA Considerations
 
    This document has no IANA actions.
 
-5.  References
+12.  References
 
-5.1.  Normative References
+12.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -128,7 +174,7 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-5.2.  Informative References
+12.2.  Informative References
 
    [draft-farrell-ufmrg-sample]
               Farrell, S., "Usable Formal Methods Sample Problems", 19
@@ -139,6 +185,11 @@ Table of Contents
               Access Protocol (IMAP) - Version 4rev2", RFC 9051,
               DOI 10.17487/RFC9051, August 2021,
               <https://www.rfc-editor.org/rfc/rfc9051>.
+
+   [RFC9397]  Pei, M., Tschofenig, H., Thaler, D., and D. Wheeler,
+              "Trusted Execution Environment Provisioning (TEEP)
+              Architecture", RFC 9397, DOI 10.17487/RFC9397, July 2023,
+              <https://www.rfc-editor.org/rfc/rfc9397>.
 
    [suit]     IETF, "Software Updates for the Internet of Things", 2023,
               <https://datatracker.ietf.org/wg/suit/about/>.
