@@ -39,11 +39,13 @@ informative:
     target: https://datatracker.ietf.org/doc/agenda-interim-2023-suit-01-sessa/
     author:
       name: Dave Thaler
+    date: 2023-09-11
   thaler:
     title: "TEEP Protocol: draft-ietf-teep-protocol-16"
     target: https://datatracker.ietf.org/meeting/interim-2023-suit-01/materials/slides-interim-2023-suit-01-sessa-teep-protocol-00.pdf
     author:
       name: Dave Thaler
+    date: 2023-09-11
   teep:
     title: Trusted Execution Environment Provisioning
     target: https://datatracker.ietf.org/wg/teep/about/
