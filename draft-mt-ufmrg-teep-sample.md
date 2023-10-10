@@ -28,12 +28,6 @@ author:
 normative:
 
 informative:
-  draft-farrell-ufmrg-sample:
-    title: Usable Formal Methods Sample Problems
-    target: https://datatracker.ietf.org/doc/draft-farrell-ufmrg-sample/
-    author:
-      name: Stephen Farrell
-    date: 2023-06-19
   suit:
     title: Software Updates for the Internet of Things
     target: https://datatracker.ietf.org/wg/suit/about/
@@ -56,20 +50,10 @@ informative:
     author:
       organization: IETF
     date: 2023
-  teep-protocol:
-    title: Trusted Execution Environment Provisioning (TEEP) Protocool
-    target: https://datatracker.ietf.org/doc/draft-ietf-teep-protocol/
-    author:
-      - name: Hannes Tschofenig
-      - name: Mingliang Pei
-      - name: David Wheeler
-      - name: Dave Thaler
-      - name: Akira Tsukamoto
-    date: 2023-09-05
 
 --- abstract
 
-This draft follows the invitation of {{draft-farrell-ufmrg-sample}} to propose
+This draft follows the invitation of {{?I-D.farrell-ufmrg-sample}} to propose
 another sample problem for demonstration, training, and evaluation of formal
 methods in IETF work.  It draws on recent work from the Software Updates for the
 Internet of Things {{suit}} and Trusted Execution Environment Provisioning
@@ -82,9 +66,9 @@ than a familiar IETF protocol.
 # Introduction
 
 In this draft we take the Trusted Execution Environment Provisioning protocol
-{{teep-protocol}} to be a good domain from which to draw a sample modeling
-problem for slightly different reasons than those proposed in
-{{draft-farrell-ufmrg-sample}}.
+{{?I-D.ietf-teep-protocol}} to be a good domain from which to draw a sample
+modeling problem for slightly different reasons than those proposed in
+{{?I-D.farrell-ufmrg-sample}}.
 
 1. TEEP is a proposed standard under active development, at working-group
    consensus as of this writing.  Formal modeling, even for demonstration or
@@ -98,7 +82,7 @@ problem for slightly different reasons than those proposed in
 
 3. The TEEP protocol has well-defined use cases and includes provisions for
    constrained environments.  Modeling the entire protocol is a reasonble
-   learning or training exercise, whereas {{draft-farrell-ufmrg-sample}}
+   learning or training exercise, whereas {{?I-D.farrell-ufmrg-sample}}
    limits itself to just the `SEARCH` command of {{?RFC9051}}.
 
 
@@ -109,10 +93,11 @@ problem for slightly different reasons than those proposed in
 
 # The Trusted Execution Environment Provisioning (TEEP) Protocol
 
-The Trusted Execution Environment Provisioning protocol {{teep-protocol}}
-specifies communication between a Trusted Application Manager
-{{?RFC9397 (Section 2)}} and a TEEP agent.  Importantly, this communication is
-relayed by an *untrusted* TEEP Broker {{?RFC9397 (Section 6.1)}}.
+The Trusted Execution Environment Provisioning protocol
+{{?I-D.ietf-teep-protocol}} specifies communication between a Trusted
+Application Manager {{?RFC9397 (Section 2)}} and a TEEP agent.  Importantly,
+this communication is relayed by an *untrusted* TEEP Broker {{?RFC9397 (Section
+6.1)}}.
 
 ~~~
 # TAM -> TEEP Agent: QueryRequest
@@ -145,7 +130,8 @@ requested-tc-list, requested-tc-list}SK_AGENT
 ## Security Properties
 
 At the {{suit-interim}} meeting, the following editorial addition was proposed
-{{thaler}} in TEEP's security consideration ({{Section 10 of teep-protocol}}):
+{{thaler}} in TEEP's security consideration ({{Section 10 of
+?I-D.ietf-teep-protocol}}):
 
 >  The TEEP protocol supports replay protection as follows. The transport
 > protocol under the TEEP protocol might provide replay protection, but may be
