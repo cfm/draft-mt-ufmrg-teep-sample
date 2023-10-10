@@ -176,11 +176,3 @@ for the TEEP protocol.
 # IANA Considerations
 
 This document has no IANA actions.
-
-
---- back
-
-# Acknowledgments
-{:numbered="false"}
-
-TODO acknowledge.
