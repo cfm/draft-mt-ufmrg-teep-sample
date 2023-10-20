@@ -111,7 +111,7 @@ The Trusted Execution Environment Provisioning protocol
 Application Manager {{?RFC9397 (Section 2)}} and a TEEP agent.  Importantly,
 this communication is relayed by an *untrusted* TEEP Broker {{?RFC9397 (Section
 6.1)}}. Two security sensitive payloads are communicated via the TEEP protocol,
-namely 
+namely:
 
 - Trusted Applications (TAs) and Trusted Components (TCs), and
 - Attestation Evidence.
@@ -126,7 +126,8 @@ thus managed by being included in Trusted Components.
 TCs are provided by developers, or authors, and integrity and (optionally)
 confidentiality protected with the help of SUIT manifests. The TEEP
 protocol specification uses the term 'Trusted Component Signer' to refer
-to authors. Neither the TAM nor the TEEP Broker are able to modify TCs.
+to authors. Neither the TAM nor the TEEP Broker should be able to modify TCs.
+TEEP Agents only install TCs from sources they trust.
 
 Attestation Evidence on the other hand is typically communicated from the
 TEEP Agent to the TAM although there is the option to offer attestation
