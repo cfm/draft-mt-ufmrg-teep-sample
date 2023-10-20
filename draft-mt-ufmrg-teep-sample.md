@@ -87,6 +87,17 @@ modeling problem for slightly different reasons than those proposed in
    learning or training exercise, whereas {{?I-D.farrell-ufmrg-sample}}
    limits itself to just the `SEARCH` command of {{?RFC9051}}.
 
+4. The TEEP protocol follows a typical protocol design in the IETF where
+   various already standardized technologies are re-used. The architecture
+   of the TEEP protocol is also representative for IETF protocol development
+   since more than two parties are involved in the communication even in a
+   single deployment setup.
+
+5. The TEEP protocol also provides a number of options to offer flexibility
+   in different deployments. This is also a characteristic found in many
+   IETF protocols. Dealing with the formal analysis of all
+   options is a challenge.
+
 
 # Conventions and Definitions
 
@@ -99,25 +110,70 @@ The Trusted Execution Environment Provisioning protocol
 {{?I-D.ietf-teep-protocol}} specifies communication between a Trusted
 Application Manager {{?RFC9397 (Section 2)}} and a TEEP agent.  Importantly,
 this communication is relayed by an *untrusted* TEEP Broker {{?RFC9397 (Section
-6.1)}}.
+6.1)}}. Two security sensitive payloads are communicated via the TEEP protocol,
+namely 
+
+- Trusted Applications (TAs) and Trusted Components (TCs), and
+- Attestation Evidence.
+
+A Trusted Application is an application (or, in some implementations,
+an application component) that runs in a TEE.
+
+A Trusted Component is a set of code and/or data in a TEE managed as a unit by a
+Trusted Application Manager. Trusted Applications and Personalization Data are
+thus managed by being included in Trusted Components.
+
+TCs are provided by developers, or authors, and integrity and (optionally)
+confidentiality protected with the help of SUIT manifests. The TEEP
+protocol specification uses the term 'Trusted Component Signer' to refer
+to authors. Neither the TAM nor the TEEP Broker are able to modify TCs.
+
+Attestation Evidence on the other hand is typically communicated from the
+TEEP Agent to the TAM although there is the option to offer attestation
+capabilities in both directions. In the description below we only focus
+on attestation of the Device containing the TEEP Agent to the TAM rather
+than the other direction. 
+
+The description below illustrates the basic communication interaction with
+details of the TEEP protocol abstracted away. 
 
 ~~~
+# TAM -> Verifier: NonceRequest
+
+# TAM <- Verifier: NonceResponse
+Nonce
+~~~~
+
+Legend:
+
+ - The 'challenge' is a random number that is provided by the Verifier, which will subsequently be used to demonstrate freshness of attestation evidence.
+ 
+~~~~
 # TAM -> TEEP Agent: QueryRequest
 {token, challenge, supported-teep-cipher-suites,
 supported-suit-cose-profiles, data-item-requested(trusted-components,
 attestation)}SK_TAM
+~~~
 
-# TAM -> Attester: Get Evidence (Challenge)
+Legend:
+
+ - The 'token' is a random number that is used to match the QueryRequest
+   against the QueryRespose.
+ - 'supported-teep-cipher-suites' and 'supported-suit-cose-profiles' offer cipher suite negotation.
+ - 'data-item-requested(X)' indicates the functionality the TAM requests the TEEP Agent to perform.
+ - {_}SK_TAM indicates the a digital signature operation over the payload of the message using a private (or secret) key that is only known to the TAM.
+
+~~~
+# TEEP Agent -> Attester: Get Evidence (Challenge)
 Challenge
 
-# TAM <- Attester: Evidence(Challenge)
+# TEEP Agent <- Attester: Evidence(Challenge)
 {Challenge, Claims}SK_Attester
 
 # TAM <- TEEP Agent: QueryResponse
 {token, selected-teep-cipher-suite, attestation-payload-format(EAT),
 attestation-payload({Challenge, Claims}SK_Attester),tc-list,
 requested-tc-list, requested-tc-list}SK_AGENT
-
 
 # Author -> TAM: Software
 {manifest, sequence_nr, software}SK_AUTHOR
