@@ -161,7 +161,8 @@ Legend:
    against the QueryRespose.
  - 'supported-teep-cipher-suites' and 'supported-suit-cose-profiles' offer cipher suite negotation.
  - 'data-item-requested(X)' indicates the functionality the TAM requests the TEEP Agent to perform.
- - {_}SK_TAM indicates the a digital signature operation over the payload of the message using a private (or secret) key that is only known to the TAM.
+ - {_}SK_TAM indicates the a digital signature operation over the payload of the message using a
+private (or secret) key that is only known to the TAM.
 
 ~~~
 # TEEP Agent -> Attester: EvidenceRequest
@@ -213,7 +214,7 @@ The author, i.e. Trusted Component Signer, uses his private key, SK_AUTHOR, to s
 Legend:
 
  - 'token2' is a new random number, which is again used by the TAM to match requests against responses.
- 
+
 The TAM transmits an update to the TEEP Agent containing the previously obtained payloaded provided by the author.
 This payload is additionally signed with the TAM's private key, SK_TAM.
 
@@ -222,7 +223,8 @@ This payload is additionally signed with the TAM's private key, SK_TAM.
 {token2}SK_AGENT
 ~~~
 
-The TEEP Agent returns this message when the software installation was successful. The message is signed with the private key of the TEEP Agent, SK_AGENT.
+The TEEP Agent returns this message when the software installation was successful. The message is signed with
+the private key of the TEEP Agent, SK_AGENT.
 
 ## Security Properties
 
