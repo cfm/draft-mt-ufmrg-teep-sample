@@ -148,7 +148,7 @@ Nonce
 Legend:
 
  - The 'challenge' is a random number provided by the Verifier. It is used to demonstrate freshness of attestation evidence.
- 
+
 ~~~~
 # TAM -> TEEP Agent: QueryRequest
 {token, challenge, supported-teep-cipher-suites,
@@ -178,7 +178,7 @@ Legend:
  - '{Challenge, Claims}SK_Attester' represents the Evidence, which is signed by the Attester using its private key SK_Attester.
 In addition to the inclusion of the 'Challenge', the random number provided by the Verifier, it also includes further (unspecified)
 claims. While those claims are important for the overall system, they are not in scope of this analysis.
- 
+
 ~~~
 # TAM <- TEEP Agent: QueryResponse
 {token, selected-teep-cipher-suite, attestation-payload-format(EAT),
