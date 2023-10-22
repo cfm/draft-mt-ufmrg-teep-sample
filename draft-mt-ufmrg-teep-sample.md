@@ -90,7 +90,7 @@ modeling problem for slightly different reasons than those proposed in
 4. The TEEP protocol follows a typical protocol design in the IETF where
    various already standardized technologies are re-used. In this case,
    protocols from the Software Updates for Internet of Things (SUIT)
-   architecture {{RFC9019}} and from the Remote attestation procedures (RATS)
+   architecture {{!RFC9019}} and from the Remote attestation procedures (RATS)
    architecture {{!RFC9334}} are incorporated into the design.
 
 6. The architecture of the TEEP protocol is also representative for IETF
