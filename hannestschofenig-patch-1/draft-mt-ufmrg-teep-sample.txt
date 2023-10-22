@@ -5,7 +5,7 @@
 Usable Formal Methods Proposed Research Group                   C. Myers
 Internet-Draft                                                          
 Intended status: Informational                             H. Tschofenig
-Expires: 22 April 2024                                   20 October 2023
+Expires: 24 April 2024                                   22 October 2023
 
 
             A Usable Formal Methods Sample Problem from TEEP
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 22 April 2024.
+   This Internet-Draft will expire on 24 April 2024.
 
 Copyright Notice
 
@@ -101,12 +101,19 @@ Table of Contents
        command of [RFC9051].
 
    4.  The TEEP protocol follows a typical protocol design in the IETF
-       where various already standardized technologies are re-used.  The
-       architecture of the TEEP protocol is also representative for IETF
-       protocol development since more than two parties are involved in
-       the communication even in a single deployment setup.
+       where various already standardized technologies are re-used.  In
+       this case, protocols from the Software Updates for Internet of
+       Things (SUIT) architecture [RFC9019] and from the Remote
+       attestation procedures (RATS) architecture [RFC9334] are
+       incorporated into the design.
 
-   5.  The TEEP protocol also provides a number of options to offer
+   5.  The architecture of the TEEP protocol is also representative for
+       IETF protocol development since more than two parties are
+       involved in the communication even in a single deployment setup.
+       Whether the formal model also has to consider all parties or a
+       simplified design is subject for discussion.
+
+   6.  The TEEP protocol also provides a number of options to offer
        flexibility in different deployments.  This is also a
        characteristic found in many IETF protocols.  Dealing with the
        formal analysis of all options is a challenge.
@@ -309,6 +316,16 @@ attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC9019]  Moran, B., Tschofenig, H., Brown, D., and M. Meriac, "A
+              Firmware Update Architecture for Internet of Things",
+              RFC 9019, DOI 10.17487/RFC9019, April 2021,
+              <https://www.rfc-editor.org/rfc/rfc9019>.
+
+   [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
+              W. Pan, "Remote ATtestation procedureS (RATS)
+              Architecture", RFC 9334, DOI 10.17487/RFC9334, January
+              2023, <https://www.rfc-editor.org/rfc/rfc9334>.
 
 6.2.  Informative References
 
