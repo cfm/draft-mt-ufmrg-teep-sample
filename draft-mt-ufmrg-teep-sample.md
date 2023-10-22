@@ -88,12 +88,18 @@ modeling problem for slightly different reasons than those proposed in
    limits itself to just the `SEARCH` command of {{?RFC9051}}.
 
 4. The TEEP protocol follows a typical protocol design in the IETF where
-   various already standardized technologies are re-used. The architecture
-   of the TEEP protocol is also representative for IETF protocol development
-   since more than two parties are involved in the communication even in a
-   single deployment setup.
+   various already standardized technologies are re-used. In this case,
+   protocols from the Software Updates for Internet of Things (SUIT)
+   architecture {{RFC9019}} and from the Remote attestation procedures (RATS)
+   architecture {{!RFC9334}} are incorporated into the design.
+   
+6. The architecture of the TEEP protocol is also representative for IETF
+   protocol development since more than two parties are involved in the
+   communication even in a single deployment setup. Whether the formal
+   model also has to consider all parties or a simplified design is subject
+   for discussion.
 
-5. The TEEP protocol also provides a number of options to offer flexibility
+8. The TEEP protocol also provides a number of options to offer flexibility
    in different deployments. This is also a characteristic found in many
    IETF protocols. Dealing with the formal analysis of all
    options is a challenge.
@@ -102,7 +108,6 @@ modeling problem for slightly different reasons than those proposed in
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
-
 
 # The Trusted Execution Environment Provisioning (TEEP) Protocol
 
