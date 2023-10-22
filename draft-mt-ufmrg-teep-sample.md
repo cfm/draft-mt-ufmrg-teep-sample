@@ -92,18 +92,17 @@ modeling problem for slightly different reasons than those proposed in
    protocols from the Software Updates for Internet of Things (SUIT)
    architecture {{RFC9019}} and from the Remote attestation procedures (RATS)
    architecture {{!RFC9334}} are incorporated into the design.
-   
+
 6. The architecture of the TEEP protocol is also representative for IETF
    protocol development since more than two parties are involved in the
    communication even in a single deployment setup. Whether the formal
    model also has to consider all parties or a simplified design is subject
    for discussion.
 
-8. The TEEP protocol also provides a number of options to offer flexibility
+7. The TEEP protocol also provides a number of options to offer flexibility
    in different deployments. This is also a characteristic found in many
    IETF protocols. Dealing with the formal analysis of all
    options is a challenge.
-
 
 # Conventions and Definitions
 
