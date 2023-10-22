@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-10-19T00:17:38.392572+00:00",
+  "timestamp": "2023-10-22T00:19:16.689358+00:00",
   "repo": "cfm/draft-mt-ufmrg-teep-sample",
   "labels": [
     {
@@ -50,5 +50,53 @@
     }
   ],
   "issues": [],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOKVQrlc5dXvFS",
+      "title": "Update draft-mt-ufmrg-teep-sample.md",
+      "url": "https://github.com/cfm/draft-mt-ufmrg-teep-sample/pull/1",
+      "state": "OPEN",
+      "author": "hannestschofenig",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-10-20T11:14:00Z",
+      "updatedAt": "2023-10-20T16:24:26Z",
+      "baseRepository": "cfm/draft-mt-ufmrg-teep-sample",
+      "baseRefName": "main",
+      "baseRefOid": "fa1f5b18887b13e7e78b99be96c729353e2e74d4",
+      "headRepository": "cfm/draft-mt-ufmrg-teep-sample",
+      "headRefName": "hannestschofenig-patch-1",
+      "headRefOid": "6143dd8844901df0ffa155dae7516e93fafbaf44",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOKVQrlc5kwhBJ",
+          "commit": {
+            "abbreviatedOid": "6143dd8"
+          },
+          "author": "cfm",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "Thanks!  I've left one question inline for now.  I'll suggest some edits next week before merging.",
+          "createdAt": "2023-10-20T16:18:59Z",
+          "updatedAt": "2023-10-20T16:24:26Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "Isn't this always the case in a protocol, as opposed to an algorithm, say, or a format specification?  Is your point here that there are multiple participants in the protocol, whose interactions can therefore be modeled under different scenarios?  (Whereas IMAP `SEARCH` is just client-server?)",
+              "createdAt": "2023-10-20T16:18:59Z",
+              "updatedAt": "2023-10-20T16:24:26Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
