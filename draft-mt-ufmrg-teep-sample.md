@@ -87,11 +87,26 @@ modeling problem for slightly different reasons than those proposed in
    learning or training exercise, whereas {{?I-D.farrell-ufmrg-sample}}
    limits itself to just the `SEARCH` command of {{?RFC9051}}.
 
+4. The TEEP protocol follows a typical protocol design in the IETF where
+   various already standardized technologies are re-used. In this case,
+   protocols from the Software Updates for Internet of Things (SUIT)
+   architecture {{!RFC9019}} and from the Remote attestation procedures (RATS)
+   architecture {{!RFC9334}} are incorporated into the design.
+
+6. The architecture of the TEEP protocol is also representative for IETF
+   protocol development since more than two parties are involved in the
+   communication even in a single deployment setup. Whether the formal
+   model also has to consider all parties or a simplified design is subject
+   for discussion.
+
+7. The TEEP protocol also provides a number of options to offer flexibility
+   in different deployments. This is also a characteristic found in many
+   IETF protocols. Dealing with the formal analysis of all
+   options is a challenge.
 
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
-
 
 # The Trusted Execution Environment Provisioning (TEEP) Protocol
 
@@ -99,43 +114,133 @@ The Trusted Execution Environment Provisioning protocol
 {{?I-D.ietf-teep-protocol}} specifies communication between a Trusted
 Application Manager {{?RFC9397 (Section 2)}} and a TEEP agent.  Importantly,
 this communication is relayed by an *untrusted* TEEP Broker {{?RFC9397 (Section
-6.1)}}.
+6.1)}}. Two security sensitive payloads are communicated via the TEEP protocol,
+namely:
+
+- Trusted Applications (TAs) and Trusted Components (TCs), and
+- Attestation Evidence.
+
+A Trusted Application is an application (or, in some implementations,
+an application component) that runs in a TEE.
+
+A Trusted Component is a set of code and/or data in a TEE managed as a unit by a
+Trusted Application Manager. Trusted Applications and Personalization Data are
+thus managed by being included in Trusted Components.
+
+TCs are provided by developers, or authors, and integrity and (optionally)
+confidentiality protected with the help of SUIT manifests. The TEEP
+protocol specification uses the term 'Trusted Component Signer' to refer
+to authors. Neither the TAM nor the TEEP Broker should be able to modify TCs.
+TEEP Agents only install TCs from sources they trust.
+
+Attestation Evidence on the other hand is typically communicated from the
+TEEP Agent to the TAM although there is the option to offer attestation
+capabilities in both directions. In the description below we only focus
+on attestation of the Device containing the TEEP Agent to the TAM rather
+than the other direction.
+
+The description below illustrates the basic communication interaction with
+details of the TEEP protocol abstracted away.
 
 ~~~
+# TAM -> Verifier: NonceRequest
+
+# TAM <- Verifier: NonceResponse
+Nonce
+~~~~
+
+Legend:
+
+ - The 'challenge' is a random number provided by the Verifier. It is used to demonstrate freshness of attestation evidence.
+
+~~~~
 # TAM -> TEEP Agent: QueryRequest
 {token, challenge, supported-teep-cipher-suites,
 supported-suit-cose-profiles, data-item-requested(trusted-components,
 attestation)}SK_TAM
-
-# TAM -> Attester: Get Evidence (Challenge)
-Challenge
-
-# TAM <- Attester: Evidence(Challenge)
-{Challenge, Claims}SK_Attester
-
-# TAM <- TEEP Agent: QueryResponse
-{token, selected-teep-cipher-suite, attestation-payload-format(EAT),
-attestation-payload({Challenge, Claims}SK_Attester),tc-list,
-requested-tc-list, requested-tc-list}SK_AGENT
-
-
-# Author -> TAM: Software
-{manifest, sequence_nr, software}SK_AUTHOR
-
-# TAM -> TEEP Agent: Update
-{token', {manifest, sequence_nr, software}SK_AUTHOR}SK_TAM
-
-# TAM <- TEEP Agent: Success
-{token'}SK_AGENT
 ~~~
 
+Legend:
+
+ - The 'token' is a random number that is used to match the QueryRequest
+   against the QueryRespose.
+ - 'supported-teep-cipher-suites' and 'supported-suit-cose-profiles' offer cipher suite negotation.
+ - 'data-item-requested(X)' indicates the functionality the TAM requests the TEEP Agent to perform.
+ - {_}SK_TAM indicates the a digital signature operation over the payload of the message using a
+private (or secret) key that is only known to the TAM.
+
+~~~
+# TEEP Agent -> Attester: EvidenceRequest
+Challenge
+
+# TEEP Agent <- Attester: EvidenceResponse
+{Challenge, Claims}SK_Attester
+~~~
+
+Legend:
+
+ - '{Challenge, Claims}SK_Attester' represents the Evidence, which is signed by the Attester using its private key SK_Attester.
+In addition to the inclusion of the 'Challenge', the random number provided by the Verifier, it also includes further (unspecified)
+claims. While those claims are important for the overall system, they are not in scope of this analysis.
+
+~~~
+# TAM <- TEEP Agent: QueryResponse
+{token, selected-teep-cipher-suite, attestation-payload-format(EAT),
+attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
+~~~~
+
+Legend:
+
+ - 'selected-teep-cipher-suite' indicates the selected cipher suite.
+ - 'attestation-payload-format(EAT)' indicates the format of the attached attestation evidence.
+ - 'tc-list' conveys the list of Trusted Components installed on the device.
+ - 'attestation-payload(_)' contains the evidence provided by the Attester in the previous step.
+
+The TEEP Agent signes the QueryResponse message with its private key, SK_AGENT.
+
+~~~
+# Author -> TAM: SoftwareUpdate
+{manifest, sequence_nr, TC}SK_AUTHOR
+~~~~
+
+Legend:
+
+- The 'manifest' contains instructions for how to install the software.
+- 'sequence_nr', as the name indicates, allows the TEEP Agent to distingush this update from earlier versions of the software.
+- 'TC' is the Trusted Component to be installed. This could be a binary, configuration data, or both.
+
+The author, i.e. Trusted Component Signer, uses his private key, SK_AUTHOR, to sign the bundle.
+
+~~~
+# TAM -> TEEP Agent: Update
+{token2, {manifest, sequence_nr, software}SK_AUTHOR}SK_TAM
+~~~
+
+Legend:
+
+ - 'token2' is a new random number, which is again used by the TAM to match requests against responses.
+
+The TAM transmits an update to the TEEP Agent containing the previously obtained payloaded provided by the author.
+This payload is additionally signed with the TAM's private key, SK_TAM.
+
+~~~
+# TAM <- TEEP Agent: Success
+{token2}SK_AGENT
+~~~
+
+The TEEP Agent returns this message when the software installation was successful. The message is signed with
+the private key of the TEEP Agent, SK_AGENT.
+
 ## Security Properties
+
+In addition to integrity and authentication properties, an important aspect
+is replay protection.
 
 At the {{suit-interim}} meeting, the following editorial addition was proposed
 {{thaler}} in TEEP's security consideration ({{Section 10 of
 ?I-D.ietf-teep-protocol}}):
 
->  The TEEP protocol supports replay protection as follows. The transport
+> The TEEP protocol supports replay protection as follows. The transport
 > protocol under the TEEP protocol might provide replay protection, but may be
 > terminated in the TEEP Broker which is not trusted by the TEEP Agent and so the
 > TEEP protocol does replay protection itself. If attestation of the TAM is used,
@@ -153,6 +258,8 @@ At the {{suit-interim}} meeting, the following editorial addition was proposed
 
 Any formal model of TEEP should be able to prove this replay protection.
 
+While confidentiality protection is possible for both attestation evidence as well
+as Trusted Components, it is not mandatory-to-implement functionality.
 
 # Security Considerations
 
