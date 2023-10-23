@@ -143,18 +143,18 @@ The description below illustrates the basic communication interaction with
 details of the TEEP protocol abstracted away.
 
 ~~~
-# TAM -> Verifier: NonceRequest
+TAM -> Verifier: NonceRequest
 
-# TAM <- Verifier: NonceResponse
+TAM <- Verifier: NonceResponse
 Nonce
-~~~~
+~~~
 
 Legend:
 
  - The 'challenge' is a random number provided by the Verifier. It is used to demonstrate freshness of attestation evidence.
 
-~~~~
-# TAM -> TEEP Agent: QueryRequest
+~~~
+TAM -> TEEP Agent: QueryRequest
 {token, challenge, supported-teep-cipher-suites,
 supported-suit-cose-profiles, data-item-requested(trusted-components,
 attestation)}SK_TAM
@@ -170,10 +170,10 @@ Legend:
 private (or secret) key that is only known to the TAM.
 
 ~~~
-# TEEP Agent -> Attester: EvidenceRequest
+TEEP Agent -> Attester: EvidenceRequest
 Challenge
 
-# TEEP Agent <- Attester: EvidenceResponse
+TEEP Agent <- Attester: EvidenceResponse
 {Challenge, Claims}SK_Attester
 ~~~
 
@@ -184,10 +184,10 @@ In addition to the inclusion of the 'Challenge', the random number provided by t
 claims. While those claims are important for the overall system, they are not in scope of this analysis.
 
 ~~~
-# TAM <- TEEP Agent: QueryResponse
+TAM <- TEEP Agent: QueryResponse
 {token, selected-teep-cipher-suite, attestation-payload-format(EAT),
 attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
-~~~~
+~~~
 
 Legend:
 
@@ -199,9 +199,9 @@ Legend:
 The TEEP Agent signes the QueryResponse message with its private key, SK_AGENT.
 
 ~~~
-# Author -> TAM: SoftwareUpdate
+Author -> TAM: SoftwareUpdate
 {manifest, sequence_nr, TC}SK_AUTHOR
-~~~~
+~~~
 
 Legend:
 
@@ -212,7 +212,7 @@ Legend:
 The author, i.e. Trusted Component Signer, uses his private key, SK_AUTHOR, to sign the bundle.
 
 ~~~
-# TAM -> TEEP Agent: Update
+TAM -> TEEP Agent: Update
 {token2, {manifest, sequence_nr, software}SK_AUTHOR}SK_TAM
 ~~~
 
@@ -224,7 +224,7 @@ The TAM transmits an update to the TEEP Agent containing the previously obtained
 This payload is additionally signed with the TAM's private key, SK_TAM.
 
 ~~~
-# TAM <- TEEP Agent: Success
+TAM <- TEEP Agent: Success
 {token2}SK_AGENT
 ~~~
 
@@ -238,7 +238,7 @@ is replay protection.
 
 At the {{suit-interim}} meeting, the following editorial addition was proposed
 {{thaler}} in TEEP's security consideration ({{Section 10 of
-?I-D.ietf-teep-protocol}}):
+!I-D.ietf-teep-protocol}}):
 
 > The TEEP protocol supports replay protection as follows. The transport
 > protocol under the TEEP protocol might provide replay protection, but may be
