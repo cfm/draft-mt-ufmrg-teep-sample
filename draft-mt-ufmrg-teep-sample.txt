@@ -163,9 +163,9 @@ Table of Contents
    The description below illustrates the basic communication interaction
    with details of the TEEP protocol abstracted away.
 
-   # TAM -> Verifier: NonceRequest
+   TAM -> Verifier: NonceRequest
 
-   # TAM <- Verifier: NonceResponse
+   TAM <- Verifier: NonceResponse
    Nonce
 
    Legend:
@@ -173,39 +173,44 @@ Table of Contents
    *  The 'challenge' is a random number provided by the Verifier.  It
       is used to demonstrate freshness of attestation evidence.
 
-# TAM -> TEEP Agent: QueryRequest
-{token, challenge, supported-teep-cipher-suites,
-supported-suit-cose-profiles, data-item-requested(trusted-components,
-attestation)}SK_TAM
-~~~
+   TAM -> TEEP Agent: QueryRequest
+   {token, challenge, supported-teep-cipher-suites,
+   supported-suit-cose-profiles, data-item-requested(trusted-components,
+   attestation)}SK_TAM
 
-Legend:
+   Legend:
 
- - The 'token' is a random number that is used to match the QueryRequest
-   against the QueryRespose.
- - 'supported-teep-cipher-suites' and 'supported-suit-cose-profiles' offer cipher suite negotation.
- - 'data-item-requested(X)' indicates the functionality the TAM requests the TEEP Agent to perform.
- - {_}SK_TAM indicates the a digital signature operation over the payload of the message using a
-private (or secret) key that is only known to the TAM.
+   *  The 'token' is a random number that is used to match the
+      QueryRequest against the QueryRespose.
 
-~~~
-# TEEP Agent -> Attester: EvidenceRequest
-Challenge
+   *  'supported-teep-cipher-suites' and 'supported-suit-cose-profiles'
+      offer cipher suite negotation.
 
-# TEEP Agent <- Attester: EvidenceResponse
-{Challenge, Claims}SK_Attester
-~~~
+   *  'data-item-requested(X)' indicates the functionality the TAM
+      requests the TEEP Agent to perform.
 
-Legend:
+   *  {_}SK_TAM indicates the a digital signature operation over the
+      payload of the message using a private (or secret) key that is
+      only known to the TAM.
 
- - '{Challenge, Claims}SK_Attester' represents the Evidence, which is signed by the Attester using its private key SK_Attester.
-In addition to the inclusion of the 'Challenge', the random number provided by the Verifier, it also includes further (unspecified)
-claims. While those claims are important for the overall system, they are not in scope of this analysis.
+   TEEP Agent -> Attester: EvidenceRequest
+   Challenge
 
-~~~
-# TAM <- TEEP Agent: QueryResponse
-{token, selected-teep-cipher-suite, attestation-payload-format(EAT),
-attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
+   TEEP Agent <- Attester: EvidenceResponse
+   {Challenge, Claims}SK_Attester
+
+   Legend:
+
+   *  '{Challenge, Claims}SK_Attester' represents the Evidence, which is
+      signed by the Attester using its private key SK_Attester.  In
+      addition to the inclusion of the 'Challenge', the random number
+      provided by the Verifier, it also includes further (unspecified)
+      claims.  While those claims are important for the overall system,
+      they are not in scope of this analysis.
+
+   TAM <- TEEP Agent: QueryResponse
+   {token, selected-teep-cipher-suite, attestation-payload-format(EAT),
+   attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
 
    Legend:
 
@@ -223,7 +228,7 @@ attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
    The TEEP Agent signes the QueryResponse message with its private key,
    SK_AGENT.
 
-   # Author -> TAM: SoftwareUpdate
+   Author -> TAM: SoftwareUpdate
    {manifest, sequence_nr, TC}SK_AUTHOR
 
    Legend:
@@ -240,7 +245,7 @@ attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
    The author, i.e. Trusted Component Signer, uses his private key,
    SK_AUTHOR, to sign the bundle.
 
-   # TAM -> TEEP Agent: Update
+   TAM -> TEEP Agent: Update
    {token2, {manifest, sequence_nr, software}SK_AUTHOR}SK_TAM
 
    Legend:
@@ -252,7 +257,7 @@ attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
    previously obtained payloaded provided by the author.  This payload
    is additionally signed with the TAM's private key, SK_TAM.
 
-   # TAM <- TEEP Agent: Success
+   TAM <- TEEP Agent: Success
    {token2}SK_AGENT
 
    The TEEP Agent returns this message when the software installation
@@ -308,6 +313,14 @@ attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
 
 6.1.  Normative References
 
+   [I-D.ietf-teep-protocol]
+              Tschofenig, H., Pei, M., Wheeler, D. M., Thaler, D., and
+              A. Tsukamoto, "Trusted Execution Environment Provisioning
+              (TEEP) Protocol", Work in Progress, Internet-Draft, draft-
+              ietf-teep-protocol-16, 5 September 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-teep-
+              protocol-16>.
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -335,14 +348,6 @@ attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
               farrell-ufmrg-sample-00, 19 June 2023,
               <https://datatracker.ietf.org/doc/html/draft-farrell-
               ufmrg-sample-00>.
-
-   [I-D.ietf-teep-protocol]
-              Tschofenig, H., Pei, M., Wheeler, D. M., Thaler, D., and
-              A. Tsukamoto, "Trusted Execution Environment Provisioning
-              (TEEP) Protocol", Work in Progress, Internet-Draft, draft-
-              ietf-teep-protocol-16, 5 September 2023,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-teep-
-              protocol-16>.
 
    [RFC9051]  Melnikov, A., Ed. and B. Leiba, Ed., "Internet Message
               Access Protocol (IMAP) - Version 4rev2", RFC 9051,

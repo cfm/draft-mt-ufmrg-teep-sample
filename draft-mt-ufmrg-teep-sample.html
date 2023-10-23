@@ -1271,9 +1271,9 @@ than the other direction.<a href="#section-3-6" class="pilcrow">¶</a></p>
 details of the TEEP protocol abstracted away.<a href="#section-3-7" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3-8">
 <pre>
-# TAM -&gt; Verifier: NonceRequest
+TAM -&gt; Verifier: NonceRequest
 
-# TAM &lt;- Verifier: NonceResponse
+TAM &lt;- Verifier: NonceResponse
 Nonce
 </pre><a href="#section-3-8" class="pilcrow">¶</a>
 </div>
@@ -1285,98 +1285,110 @@ Nonce
       </ul>
 <div class="alignLeft art-text artwork" id="section-3-11">
 <pre>
-# TAM -&gt; TEEP Agent: QueryRequest
+TAM -&gt; TEEP Agent: QueryRequest
 {token, challenge, supported-teep-cipher-suites,
 supported-suit-cose-profiles, data-item-requested(trusted-components,
 attestation)}SK_TAM
-~~~
-
-Legend:
-
- - The 'token' is a random number that is used to match the QueryRequest
-   against the QueryRespose.
- - 'supported-teep-cipher-suites' and 'supported-suit-cose-profiles' offer cipher suite negotation.
- - 'data-item-requested(X)' indicates the functionality the TAM requests the TEEP Agent to perform.
- - {_}SK_TAM indicates the a digital signature operation over the payload of the message using a
-private (or secret) key that is only known to the TAM.
-
-~~~
-# TEEP Agent -&gt; Attester: EvidenceRequest
-Challenge
-
-# TEEP Agent &lt;- Attester: EvidenceResponse
-{Challenge, Claims}SK_Attester
-~~~
-
-Legend:
-
- - '{Challenge, Claims}SK_Attester' represents the Evidence, which is signed by the Attester using its private key SK_Attester.
-In addition to the inclusion of the 'Challenge', the random number provided by the Verifier, it also includes further (unspecified)
-claims. While those claims are important for the overall system, they are not in scope of this analysis.
-
-~~~
-# TAM &lt;- TEEP Agent: QueryResponse
-{token, selected-teep-cipher-suite, attestation-payload-format(EAT),
-attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
 </pre><a href="#section-3-11" class="pilcrow">¶</a>
 </div>
 <p id="section-3-12">Legend:<a href="#section-3-12" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3-13.1">
-          <p id="section-3-13.1.1">'selected-teep-cipher-suite' indicates the selected cipher suite.<a href="#section-3-13.1.1" class="pilcrow">¶</a></p>
+          <p id="section-3-13.1.1">The 'token' is a random number that is used to match the QueryRequest
+against the QueryRespose.<a href="#section-3-13.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-13.2">
-          <p id="section-3-13.2.1">'attestation-payload-format(EAT)' indicates the format of the attached attestation evidence.<a href="#section-3-13.2.1" class="pilcrow">¶</a></p>
+          <p id="section-3-13.2.1">'supported-teep-cipher-suites' and 'supported-suit-cose-profiles' offer cipher suite negotation.<a href="#section-3-13.2.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-13.3">
-          <p id="section-3-13.3.1">'tc-list' conveys the list of Trusted Components installed on the device.<a href="#section-3-13.3.1" class="pilcrow">¶</a></p>
+          <p id="section-3-13.3.1">'data-item-requested(X)' indicates the functionality the TAM requests the TEEP Agent to perform.<a href="#section-3-13.3.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-3-13.4">
-          <p id="section-3-13.4.1">'attestation-payload(_)' contains the evidence provided by the Attester in the previous step.<a href="#section-3-13.4.1" class="pilcrow">¶</a></p>
+          <p id="section-3-13.4.1">{_}SK_TAM indicates the a digital signature operation over the payload of the message using a
+private (or secret) key that is only known to the TAM.<a href="#section-3-13.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-3-14">The TEEP Agent signes the QueryResponse message with its private key, SK_AGENT.<a href="#section-3-14" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3-15">
+<div class="alignLeft art-text artwork" id="section-3-14">
 <pre>
-# Author -&gt; TAM: SoftwareUpdate
+TEEP Agent -&gt; Attester: EvidenceRequest
+Challenge
+
+TEEP Agent &lt;- Attester: EvidenceResponse
+{Challenge, Claims}SK_Attester
+</pre><a href="#section-3-14" class="pilcrow">¶</a>
+</div>
+<p id="section-3-15">Legend:<a href="#section-3-15" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-16.1">
+          <p id="section-3-16.1.1">'{Challenge, Claims}SK_Attester' represents the Evidence, which is signed by the Attester using its private key SK_Attester.
+In addition to the inclusion of the 'Challenge', the random number provided by the Verifier, it also includes further (unspecified)
+claims. While those claims are important for the overall system, they are not in scope of this analysis.<a href="#section-3-16.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<div class="alignLeft art-text artwork" id="section-3-17">
+<pre>
+TAM &lt;- TEEP Agent: QueryResponse
+{token, selected-teep-cipher-suite, attestation-payload-format(EAT),
+attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
+</pre><a href="#section-3-17" class="pilcrow">¶</a>
+</div>
+<p id="section-3-18">Legend:<a href="#section-3-18" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-19.1">
+          <p id="section-3-19.1.1">'selected-teep-cipher-suite' indicates the selected cipher suite.<a href="#section-3-19.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-19.2">
+          <p id="section-3-19.2.1">'attestation-payload-format(EAT)' indicates the format of the attached attestation evidence.<a href="#section-3-19.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-19.3">
+          <p id="section-3-19.3.1">'tc-list' conveys the list of Trusted Components installed on the device.<a href="#section-3-19.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-19.4">
+          <p id="section-3-19.4.1">'attestation-payload(_)' contains the evidence provided by the Attester in the previous step.<a href="#section-3-19.4.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-3-20">The TEEP Agent signes the QueryResponse message with its private key, SK_AGENT.<a href="#section-3-20" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3-21">
+<pre>
+Author -&gt; TAM: SoftwareUpdate
 {manifest, sequence_nr, TC}SK_AUTHOR
-</pre><a href="#section-3-15" class="pilcrow">¶</a>
+</pre><a href="#section-3-21" class="pilcrow">¶</a>
 </div>
-<p id="section-3-16">Legend:<a href="#section-3-16" class="pilcrow">¶</a></p>
+<p id="section-3-22">Legend:<a href="#section-3-22" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-17.1">
-          <p id="section-3-17.1.1">The 'manifest' contains instructions for how to install the software.<a href="#section-3-17.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3-23.1">
+          <p id="section-3-23.1.1">The 'manifest' contains instructions for how to install the software.<a href="#section-3-23.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-17.2">
-          <p id="section-3-17.2.1">'sequence_nr', as the name indicates, allows the TEEP Agent to distingush this update from earlier versions of the software.<a href="#section-3-17.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-23.2">
+          <p id="section-3-23.2.1">'sequence_nr', as the name indicates, allows the TEEP Agent to distingush this update from earlier versions of the software.<a href="#section-3-23.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-3-17.3">
-          <p id="section-3-17.3.1">'TC' is the Trusted Component to be installed. This could be a binary, configuration data, or both.<a href="#section-3-17.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-3-23.3">
+          <p id="section-3-23.3.1">'TC' is the Trusted Component to be installed. This could be a binary, configuration data, or both.<a href="#section-3-23.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-3-18">The author, i.e. Trusted Component Signer, uses his private key, SK_AUTHOR, to sign the bundle.<a href="#section-3-18" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3-19">
+<p id="section-3-24">The author, i.e. Trusted Component Signer, uses his private key, SK_AUTHOR, to sign the bundle.<a href="#section-3-24" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3-25">
 <pre>
-# TAM -&gt; TEEP Agent: Update
+TAM -&gt; TEEP Agent: Update
 {token2, {manifest, sequence_nr, software}SK_AUTHOR}SK_TAM
-</pre><a href="#section-3-19" class="pilcrow">¶</a>
+</pre><a href="#section-3-25" class="pilcrow">¶</a>
 </div>
-<p id="section-3-20">Legend:<a href="#section-3-20" class="pilcrow">¶</a></p>
+<p id="section-3-26">Legend:<a href="#section-3-26" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-21.1">
-          <p id="section-3-21.1.1">'token2' is a new random number, which is again used by the TAM to match requests against responses.<a href="#section-3-21.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3-27.1">
+          <p id="section-3-27.1.1">'token2' is a new random number, which is again used by the TAM to match requests against responses.<a href="#section-3-27.1.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-3-22">The TAM transmits an update to the TEEP Agent containing the previously obtained payloaded provided by the author.
-This payload is additionally signed with the TAM's private key, SK_TAM.<a href="#section-3-22" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3-23">
+<p id="section-3-28">The TAM transmits an update to the TEEP Agent containing the previously obtained payloaded provided by the author.
+This payload is additionally signed with the TAM's private key, SK_TAM.<a href="#section-3-28" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3-29">
 <pre>
-# TAM &lt;- TEEP Agent: Success
+TAM &lt;- TEEP Agent: Success
 {token2}SK_AGENT
-</pre><a href="#section-3-23" class="pilcrow">¶</a>
+</pre><a href="#section-3-29" class="pilcrow">¶</a>
 </div>
-<p id="section-3-24">The TEEP Agent returns this message when the software installation was successful. The message is signed with
-the private key of the TEEP Agent, SK_AGENT.<a href="#section-3-24" class="pilcrow">¶</a></p>
+<p id="section-3-30">The TEEP Agent returns this message when the software installation was successful. The message is signed with
+the private key of the TEEP Agent, SK_AGENT.<a href="#section-3-30" class="pilcrow">¶</a></p>
 <div id="security-properties">
 <section id="section-3.1">
         <h3 id="name-security-properties">
@@ -1440,6 +1452,10 @@ for the TEEP protocol.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="I-D.ietf-teep-protocol">[I-D.ietf-teep-protocol]</dt>
+        <dd>
+<span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Pei, M.</span>, <span class="refAuthor">Wheeler, D. M.</span>, <span class="refAuthor">Thaler, D.</span>, and <span class="refAuthor">A. Tsukamoto</span>, <span class="refTitle">"Trusted Execution Environment Provisioning (TEEP) Protocol"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-teep-protocol-16</span>, <time datetime="2023-09-05" class="refDate">5 September 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-teep-protocol-16">https://datatracker.ietf.org/doc/html/draft-ietf-teep-protocol-16</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
@@ -1468,10 +1484,6 @@ for the TEEP protocol.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <dt id="I-D.farrell-ufmrg-sample">[I-D.farrell-ufmrg-sample]</dt>
         <dd>
 <span class="refAuthor">Farrell, S.</span>, <span class="refTitle">"Usable Formal Methods Research Group Sample Problems"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-farrell-ufmrg-sample-00</span>, <time datetime="2023-06-19" class="refDate">19 June 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-farrell-ufmrg-sample-00">https://datatracker.ietf.org/doc/html/draft-farrell-ufmrg-sample-00</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="I-D.ietf-teep-protocol">[I-D.ietf-teep-protocol]</dt>
-        <dd>
-<span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Pei, M.</span>, <span class="refAuthor">Wheeler, D. M.</span>, <span class="refAuthor">Thaler, D.</span>, and <span class="refAuthor">A. Tsukamoto</span>, <span class="refTitle">"Trusted Execution Environment Provisioning (TEEP) Protocol"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-teep-protocol-16</span>, <time datetime="2023-09-05" class="refDate">5 September 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-teep-protocol-16">https://datatracker.ietf.org/doc/html/draft-ietf-teep-protocol-16</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9051">[RFC9051]</dt>
         <dd>
