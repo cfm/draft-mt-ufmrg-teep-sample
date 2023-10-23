@@ -15,11 +15,11 @@ Internet of Things   and Trusted Execution Environment Provisioning
   working groups to define a sample modeling problem for a novel rather
 than a familiar IETF protocol. 
     " name="description">
-<meta content="xml2rfc 3.18.1" name="generator">
+<meta content="xml2rfc 3.18.2" name="generator">
 <meta content="draft-mt-ufmrg-teep-sample-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.18.1
-    Python 3.11.5
+  xml2rfc 3.18.2
+    Python 3.11.6
     ConfigArgParse 1.5.3
     google-i18n-address 3.1.0
     intervaltree 3.1.0
@@ -1034,7 +1034,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Myers &amp; Tschofenig</td>
-<td class="center">Expires 12 April 2024</td>
+<td class="center">Expires 25 April 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1047,12 +1047,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-mt-ufmrg-teep-sample-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-10-10" class="published">10 October 2023</time>
+<time datetime="2023-10-23" class="published">23 October 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-04-12">12 April 2024</time></dd>
+<dd class="expires"><time datetime="2024-04-25">25 April 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1108,7 +1108,7 @@ than a familiar IETF protocol.<a href="#section-abstract-1" class="pilcrow">¶</
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 12 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 25 April 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1200,6 +1200,26 @@ constrained environments.  Modeling the entire protocol is a reasonble
 learning or training exercise, whereas <span>[<a href="#I-D.farrell-ufmrg-sample" class="cite xref">I-D.farrell-ufmrg-sample</a>]</span>
 limits itself to just the <code>SEARCH</code> command of <span>[<a href="#RFC9051" class="cite xref">RFC9051</a>]</span>.<a href="#section-1-2.3.1" class="pilcrow">¶</a></p>
 </li>
+        <li id="section-1-2.4">
+          <p id="section-1-2.4.1">The TEEP protocol follows a typical protocol design in the IETF where
+various already standardized technologies are re-used. In this case,
+protocols from the Software Updates for Internet of Things (SUIT)
+architecture <span>[<a href="#RFC9019" class="cite xref">RFC9019</a>]</span> and from the Remote attestation procedures (RATS)
+architecture <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> are incorporated into the design.<a href="#section-1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-2.5">
+          <p id="section-1-2.5.1">The architecture of the TEEP protocol is also representative for IETF
+protocol development since more than two parties are involved in the
+communication even in a single deployment setup. Whether the formal
+model also has to consider all parties or a simplified design is subject
+for discussion.<a href="#section-1-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-2.6">
+          <p id="section-1-2.6.1">The TEEP protocol also provides a number of options to offer flexibility
+in different deployments. This is also a characteristic found in many
+IETF protocols. Dealing with the formal analysis of all
+options is a challenge.<a href="#section-1-2.6.1" class="pilcrow">¶</a></p>
+</li>
       </ol>
 </section>
 </div>
@@ -1222,46 +1242,153 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <p id="section-3-1">The Trusted Execution Environment Provisioning protocol
 <span>[<a href="#I-D.ietf-teep-protocol" class="cite xref">I-D.ietf-teep-protocol</a>]</span> specifies communication between a Trusted
 Application Manager <span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-2" class="relref">Section 2</a>)</span> and a TEEP agent.  Importantly,
-this communication is relayed by an <em>untrusted</em> TEEP Broker <span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-6.1" class="relref">Section 6.1</a>)</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3-2">
+this communication is relayed by an <em>untrusted</em> TEEP Broker <span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-6.1" class="relref">Section 6.1</a>)</span>. Two security sensitive payloads are communicated via the TEEP protocol,
+namely:<a href="#section-3-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-2.1">
+          <p id="section-3-2.1.1">Trusted Applications (TAs) and Trusted Components (TCs), and<a href="#section-3-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-2.2">
+          <p id="section-3-2.2.1">Attestation Evidence.<a href="#section-3-2.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-3-3">A Trusted Application is an application (or, in some implementations,
+an application component) that runs in a TEE.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">A Trusted Component is a set of code and/or data in a TEE managed as a unit by a
+Trusted Application Manager. Trusted Applications and Personalization Data are
+thus managed by being included in Trusted Components.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">TCs are provided by developers, or authors, and integrity and (optionally)
+confidentiality protected with the help of SUIT manifests. The TEEP
+protocol specification uses the term 'Trusted Component Signer' to refer
+to authors. Neither the TAM nor the TEEP Broker should be able to modify TCs.
+TEEP Agents only install TCs from sources they trust.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">Attestation Evidence on the other hand is typically communicated from the
+TEEP Agent to the TAM although there is the option to offer attestation
+capabilities in both directions. In the description below we only focus
+on attestation of the Device containing the TEEP Agent to the TAM rather
+than the other direction.<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7">The description below illustrates the basic communication interaction with
+details of the TEEP protocol abstracted away.<a href="#section-3-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3-8">
+<pre>
+# TAM -&gt; Verifier: NonceRequest
+
+# TAM &lt;- Verifier: NonceResponse
+Nonce
+</pre><a href="#section-3-8" class="pilcrow">¶</a>
+</div>
+<p id="section-3-9">Legend:<a href="#section-3-9" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-10.1">
+          <p id="section-3-10.1.1">The 'challenge' is a random number provided by the Verifier. It is used to demonstrate freshness of attestation evidence.<a href="#section-3-10.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<div class="alignLeft art-text artwork" id="section-3-11">
 <pre>
 # TAM -&gt; TEEP Agent: QueryRequest
 {token, challenge, supported-teep-cipher-suites,
 supported-suit-cose-profiles, data-item-requested(trusted-components,
 attestation)}SK_TAM
+~~~
 
-# TAM -&gt; Attester: Get Evidence (Challenge)
+Legend:
+
+ - The 'token' is a random number that is used to match the QueryRequest
+   against the QueryRespose.
+ - 'supported-teep-cipher-suites' and 'supported-suit-cose-profiles' offer cipher suite negotation.
+ - 'data-item-requested(X)' indicates the functionality the TAM requests the TEEP Agent to perform.
+ - {_}SK_TAM indicates the a digital signature operation over the payload of the message using a
+private (or secret) key that is only known to the TAM.
+
+~~~
+# TEEP Agent -&gt; Attester: EvidenceRequest
 Challenge
 
-# TAM &lt;- Attester: Evidence(Challenge)
+# TEEP Agent &lt;- Attester: EvidenceResponse
 {Challenge, Claims}SK_Attester
+~~~
 
+Legend:
+
+ - '{Challenge, Claims}SK_Attester' represents the Evidence, which is signed by the Attester using its private key SK_Attester.
+In addition to the inclusion of the 'Challenge', the random number provided by the Verifier, it also includes further (unspecified)
+claims. While those claims are important for the overall system, they are not in scope of this analysis.
+
+~~~
 # TAM &lt;- TEEP Agent: QueryResponse
 {token, selected-teep-cipher-suite, attestation-payload-format(EAT),
-attestation-payload({Challenge, Claims}SK_Attester),tc-list,
-requested-tc-list, requested-tc-list}SK_AGENT
-
-
-# Author -&gt; TAM: Software
-{manifest, sequence_nr, software}SK_AUTHOR
-
-# TAM -&gt; TEEP Agent: Update
-{token', {manifest, sequence_nr, software}SK_AUTHOR}SK_TAM
-
-# TAM &lt;- TEEP Agent: Success
-{token'}SK_AGENT
-</pre><a href="#section-3-2" class="pilcrow">¶</a>
+attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
+</pre><a href="#section-3-11" class="pilcrow">¶</a>
 </div>
+<p id="section-3-12">Legend:<a href="#section-3-12" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-13.1">
+          <p id="section-3-13.1.1">'selected-teep-cipher-suite' indicates the selected cipher suite.<a href="#section-3-13.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-13.2">
+          <p id="section-3-13.2.1">'attestation-payload-format(EAT)' indicates the format of the attached attestation evidence.<a href="#section-3-13.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-13.3">
+          <p id="section-3-13.3.1">'tc-list' conveys the list of Trusted Components installed on the device.<a href="#section-3-13.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-13.4">
+          <p id="section-3-13.4.1">'attestation-payload(_)' contains the evidence provided by the Attester in the previous step.<a href="#section-3-13.4.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-3-14">The TEEP Agent signes the QueryResponse message with its private key, SK_AGENT.<a href="#section-3-14" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3-15">
+<pre>
+# Author -&gt; TAM: SoftwareUpdate
+{manifest, sequence_nr, TC}SK_AUTHOR
+</pre><a href="#section-3-15" class="pilcrow">¶</a>
+</div>
+<p id="section-3-16">Legend:<a href="#section-3-16" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-17.1">
+          <p id="section-3-17.1.1">The 'manifest' contains instructions for how to install the software.<a href="#section-3-17.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-17.2">
+          <p id="section-3-17.2.1">'sequence_nr', as the name indicates, allows the TEEP Agent to distingush this update from earlier versions of the software.<a href="#section-3-17.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-17.3">
+          <p id="section-3-17.3.1">'TC' is the Trusted Component to be installed. This could be a binary, configuration data, or both.<a href="#section-3-17.3.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-3-18">The author, i.e. Trusted Component Signer, uses his private key, SK_AUTHOR, to sign the bundle.<a href="#section-3-18" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3-19">
+<pre>
+# TAM -&gt; TEEP Agent: Update
+{token2, {manifest, sequence_nr, software}SK_AUTHOR}SK_TAM
+</pre><a href="#section-3-19" class="pilcrow">¶</a>
+</div>
+<p id="section-3-20">Legend:<a href="#section-3-20" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-21.1">
+          <p id="section-3-21.1.1">'token2' is a new random number, which is again used by the TAM to match requests against responses.<a href="#section-3-21.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-3-22">The TAM transmits an update to the TEEP Agent containing the previously obtained payloaded provided by the author.
+This payload is additionally signed with the TAM's private key, SK_TAM.<a href="#section-3-22" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3-23">
+<pre>
+# TAM &lt;- TEEP Agent: Success
+{token2}SK_AGENT
+</pre><a href="#section-3-23" class="pilcrow">¶</a>
+</div>
+<p id="section-3-24">The TEEP Agent returns this message when the software installation was successful. The message is signed with
+the private key of the TEEP Agent, SK_AGENT.<a href="#section-3-24" class="pilcrow">¶</a></p>
 <div id="security-properties">
 <section id="section-3.1">
         <h3 id="name-security-properties">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-security-properties" class="section-name selfRef">Security Properties</a>
         </h3>
-<p id="section-3.1-1">At the <span>[<a href="#suit-interim" class="cite xref">suit-interim</a>]</span> meeting, the following editorial addition was proposed
-<span>[<a href="#thaler" class="cite xref">thaler</a>]</span> in TEEP's security consideration (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-teep-protocol-16#section-10" class="relref">Section 10</a> of [<a href="#I-D.ietf-teep-protocol" class="cite xref">I-D.ietf-teep-protocol</a>]</span>):<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">In addition to integrity and authentication properties, an important aspect
+is replay protection.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">At the <span>[<a href="#suit-interim" class="cite xref">suit-interim</a>]</span> meeting, the following editorial addition was proposed
+<span>[<a href="#thaler" class="cite xref">thaler</a>]</span> in TEEP's security consideration (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-teep-protocol-16#section-10" class="relref">Section 10</a> of [<a href="#I-D.ietf-teep-protocol" class="cite xref">I-D.ietf-teep-protocol</a>]</span>):<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <ul class="normal ulEmpty">
-<li class="normal ulEmpty" id="section-3.1-2.1">
-            <p id="section-3.1-2.1.1">The TEEP protocol supports replay protection as follows. The transport
+<li class="normal ulEmpty" id="section-3.1-3.1">
+            <p id="section-3.1-3.1.1">The TEEP protocol supports replay protection as follows. The transport
 protocol under the TEEP protocol might provide replay protection, but may be
 terminated in the TEEP Broker which is not trusted by the TEEP Agent and so the
 TEEP protocol does replay protection itself. If attestation of the TAM is used,
@@ -1275,10 +1402,12 @@ attestation is not used. Update messages have replay protection via the
 suit-manifest-sequence-number (see Section 8.4.2 of [I-D.ietf-suit-manifest]).
 Error and Success messages have replay protection via SUIT Reports and/or the
 token field in the message, where a TAM can detect which message it is in
-response to.<a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
+response to.<a href="#section-3.1-3.1.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.1-3">Any formal model of TEEP should be able to prove this replay protection.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-4">Any formal model of TEEP should be able to prove this replay protection.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1-5">While confidentiality protection is possible for both attestation evidence as well
+as Trusted Components, it is not mandatory-to-implement functionality.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1316,8 +1445,16 @@ for the TEEP protocol.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9019">[RFC9019]</dt>
+        <dd>
+<span class="refAuthor">Moran, B.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Brown, D.</span>, and <span class="refAuthor">M. Meriac</span>, <span class="refTitle">"A Firmware Update Architecture for Internet of Things"</span>, <span class="seriesInfo">RFC 9019</span>, <span class="seriesInfo">DOI 10.17487/RFC9019</span>, <time datetime="2021-04" class="refDate">April 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9019">https://www.rfc-editor.org/rfc/rfc9019</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9334">[RFC9334]</dt>
+      <dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Thaler, D.</span>, <span class="refAuthor">Richardson, M.</span>, <span class="refAuthor">Smith, N.</span>, and <span class="refAuthor">W. Pan</span>, <span class="refTitle">"Remote ATtestation procedureS (RATS) Architecture"</span>, <span class="seriesInfo">RFC 9334</span>, <span class="seriesInfo">DOI 10.17487/RFC9334</span>, <time datetime="2023-01" class="refDate">January 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9334">https://www.rfc-editor.org/rfc/rfc9334</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
