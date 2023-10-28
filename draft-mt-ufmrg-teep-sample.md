@@ -80,10 +80,11 @@ modeling problem for slightly different reasons than those proposed in
    properties amenable to formal description, modeling, and analysis.  Any
    findings may have valuable security implications.
 
-3. The TEEP protocol has well-defined use cases and includes provisions for
-   constrained environments.  Modeling the entire protocol is a reasonble
-   learning or training exercise, whereas {{?I-D.farrell-ufmrg-sample}} limits
-   itself to just the `SEARCH` command of {{?RFC9051}}.
+3. The TEEP protocol has well-defined use cases and includes a number of options
+   for flexibility, including provisions for constrained environments.  Modeling
+   the entire protocol, including all its options, is a reasonable challenge for
+   a learning or training exercise.  By contrast, {{?I-D.farrell-ufmrg-sample}}
+   limits itself to just the `SEARCH` command of {{?RFC9051}}.
 
 4. The TEEP protocol follows a typical protocol design in the IETF where
    various already-standardized technologies are reused. In this case, protocols
@@ -97,9 +98,6 @@ modeling problem for slightly different reasons than those proposed in
    model must consider all parties or can limit itself to a subset is a
    worthwhile question about the scope of this sample problem.
 
-7. In addition, the TEEP protocol provides a number of options to offer flexibility
-   in different deployments, which is also characteristic of many IETF
-   protocols. Dealing with the formal analysis of all options is a challenge.
 
 # Conventions and Definitions
 
