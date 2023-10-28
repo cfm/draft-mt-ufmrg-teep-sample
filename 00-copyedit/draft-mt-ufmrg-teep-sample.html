@@ -1213,20 +1213,21 @@ development.<a href="#section-1-2.1.1" class="pilcrow">¶</a></p>
         <li id="section-1-2.2">
           <p id="section-1-2.2.1">The TEEP protocol is expressly concerned with security, so it has security
 properties amenable to formal description, modeling, and analysis.  Any
-findings may have valuble security implications.<a href="#section-1-2.2.1" class="pilcrow">¶</a></p>
+findings may have valuable security implications.<a href="#section-1-2.2.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-1-2.3">
-          <p id="section-1-2.3.1">The TEEP protocol has well-defined use cases and includes provisions for
-constrained environments.  Modeling the entire protocol is a reasonble
-learning or training exercise, whereas <span>[<a href="#I-D.farrell-ufmrg-sample" class="cite xref">I-D.farrell-ufmrg-sample</a>]</span> limits
-itself to just the <code>SEARCH</code> command of <span>[<a href="#RFC9051" class="cite xref">RFC9051</a>]</span>.<a href="#section-1-2.3.1" class="pilcrow">¶</a></p>
+          <p id="section-1-2.3.1">The TEEP protocol has well-defined use cases and includes a number of options
+for flexibility, including provisions for constrained environments.  Modeling
+the entire protocol, including all its options, is a reasonable challenge for
+a learning or training exercise.  By contrast, <span>[<a href="#I-D.farrell-ufmrg-sample" class="cite xref">I-D.farrell-ufmrg-sample</a>]</span>
+limits itself to just the <code>SEARCH</code> command of <span>[<a href="#RFC9051" class="cite xref">RFC9051</a>]</span>.<a href="#section-1-2.3.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-1-2.4">
           <p id="section-1-2.4.1">The TEEP protocol follows a typical protocol design in the IETF where
-various already standardized technologies are re-used. In this case,
-protocols from the Software Updates for Internet of Things (SUIT)
-architecture <span>[<a href="#RFC9019" class="cite xref">RFC9019</a>]</span> and the Remote Attestation Procedures (RATS)
-architecture <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> are incorporated into the design.<a href="#section-1-2.4.1" class="pilcrow">¶</a></p>
+various already-standardized technologies are reused. In this case, protocols
+from the Software Updates for Internet of Things (SUIT) architecture
+<span>[<a href="#RFC9019" class="cite xref">RFC9019</a>]</span> and the Remote Attestation Procedures (RATS) architecture
+<span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> are incorporated into the design.<a href="#section-1-2.4.1" class="pilcrow">¶</a></p>
 </li>
         <li id="section-1-2.5">
           <p id="section-1-2.5.1">The architecture of the TEEP protocol is also representative for IETF
@@ -1234,11 +1235,6 @@ protocol development since more than two parties are involved in the protocol
 communication even in a single, self-contined deployment. Whether a formal
 model must consider all parties or can limit itself to a subset is a
 worthwhile question about the scope of this sample problem.<a href="#section-1-2.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li id="section-1-2.6">
-          <p id="section-1-2.6.1">In addition, the TEEP protocol provides a number of options to offer flexibility
-in different deployments, which is also characteristic of many IETF
-protocols. Dealing with the formal analysis of all options is a challenge.<a href="#section-1-2.6.1" class="pilcrow">¶</a></p>
 </li>
       </ol>
 </section>
@@ -1261,7 +1257,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       </h2>
 <p id="section-3-1">The Trusted Execution Environment Provisioning protocol
 <span>[<a href="#I-D.ietf-teep-protocol" class="cite xref">I-D.ietf-teep-protocol</a>]</span> specifies communication between a Trusted
-Application Manager (TAM) <span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-2" class="relref">Section 2</a>)</span> and a TEEP agent.
+Application Manager (TAM) <span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-2" class="relref">Section 2</a>)</span> and a TEEP Agent.
 Importantly, this communication is relayed by an <em>untrusted</em> TEEP Broker
 <span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-6.1" class="relref">Section 6.1</a>)</span>. Two security-sensitive payloads are communicated via
 the TEEP protocol, namely:<a href="#section-3-1" class="pilcrow">¶</a></p>
@@ -1275,20 +1271,19 @@ the TEEP protocol, namely:<a href="#section-3-1" class="pilcrow">¶</a></p>
       </ul>
 <p id="section-3-3">A Trusted Application is an application (or, in some implementations, an
 application component) that runs in a TEE.<a href="#section-3-3" class="pilcrow">¶</a></p>
-<p id="section-3-4">A Trusted Component is a set of code and/or data in a TEE managed as a unit by a
-TAM. Trusted Applications and Personalization Data <span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-2" class="relref">Section 2</a>)</span> are
-thus managed by being included in Trusted Components.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-4">A Trusted Component is a set of code and/or data in a TEE that is managed as a
+unit by a TAM. Trusted Applications and Personalization Data <span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-2" class="relref">Section 2</a>)</span> are thus managed by being included in Trusted Components.<a href="#section-3-4" class="pilcrow">¶</a></p>
 <p id="section-3-5">TCs are provided by developers or authors, which TEEP calls "Trusted Component
 Signers" <span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-2" class="relref">Section 2</a>)</span>.  SUIT manifests protect TCs' integrity and
 may optionally protect their confidentiality as well.  Neither the TAM nor the
 TEEP Broker should be able to modify TCs.  TEEP Agents only install TCs from
 sources they trust.<a href="#section-3-5" class="pilcrow">¶</a></p>
-<p id="section-3-6">Attestation evidence, however, is typically communicated from the TEEP Agent to
-the TAM, although there is the option to offer attestation capabilities in both
-directions. In the description below we only focus on attestation of the Device
-<span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-2" class="relref">Section 2</a>)</span> containing the TEEP Agent to the TAM, rather than the
-other direction.<a href="#section-3-6" class="pilcrow">¶</a></p>
-<p id="section-3-7">The description below illustrates the basic communication interaction with
+<p id="section-3-6">Attestation evidence is typically communicated from the TEEP Agent to the TAM,
+although there is the option to offer attestation capabilities in both
+directions. In the description below, we focus only on attestation of the Device
+<span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-2" class="relref">Section 2</a>)</span> containing the TEEP Agent to the TAM, rather than
+attestation in the other direction.<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7">The description below illustrates the basic communication interaction, with
 details of the TEEP protocol abstracted away.<a href="#section-3-7" class="pilcrow">¶</a></p>
 <div id="noncerequestnoncerespone">
 <section id="section-3.1">
@@ -1325,15 +1320,15 @@ evidence.<a href="#section-3.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-2.2">
             <p id="section-3.2-2.2.1">The <code>token</code> is a random number that is used to match the <code>QueryRequest</code>
-against the <code>QueryResponse</code>`.<a href="#section-3.2-2.2.1" class="pilcrow">¶</a></p>
+against the <code>QueryResponse</code>.<a href="#section-3.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-2.3">
             <p id="section-3.2-2.3.1"><code>supported-teep-cipher-suites</code> and <code>supported-suit-cose-profiles</code> offer
 cipher-suite negotation.<a href="#section-3.2-2.3.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-2.4">
-            <p id="section-3.2-2.4.1"><code>data-item-requested(X)</code> indicates the functionality the TAM requests the TEEP
-Agent to perform.<a href="#section-3.2-2.4.1" class="pilcrow">¶</a></p>
+            <p id="section-3.2-2.4.1"><code>data-item-requested(X)</code> indicates the functionality that the TAM requests the
+TEEP Agent perform.<a href="#section-3.2-2.4.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.2-2.5">
             <p id="section-3.2-2.5.1"><code>{_}SK_TAM</code> indicates a digital signature over the payload of the message
@@ -1350,16 +1345,16 @@ using a private (or secret) key that is only known to the TAM.<a href="#section-
 <div class="alignLeft art-text artwork" id="section-3.3-1">
 <pre>
 TEEP Agent -&gt; Attester: EvidenceRequest
-Challenge
+challenge
 
 TEEP Agent &lt;- Attester: EvidenceResponse
-{Challenge, Claims}SK_Attester
+{challenge, claims}SK_ATTESTER
 </pre><a href="#section-3.3-1" class="pilcrow">¶</a>
 </div>
 <ul class="normal">
 <li class="normal" id="section-3.3-2.1">
-            <p id="section-3.3-2.1.1"><code>{Challenge, Claims}SK_Attester</code> represents the evidence, which is signed by
-the Attester using its private key <code>SK_Attester</code>.<a href="#section-3.3-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.3-2.1.1"><code>{challenge, claims}SK_ATTESTER</code> represents the evidence, which is signed by
+the Attester using its private key <code>SK_ATTESTER</code>.<a href="#section-3.3-2.1.1" class="pilcrow">¶</a></p>
 <p id="section-3.3-2.1.2">
 In addition to the inclusion of the <code>Challenge</code>, the random number provided by
 the Verifier, it also includes further (unspecified) claims. While those
@@ -1378,7 +1373,7 @@ analysis.<a href="#section-3.3-2.1.2" class="pilcrow">¶</a></p>
 <pre>
 TAM &lt;- TEEP Agent: QueryResponse
 {token, selected-teep-cipher-suite, attestation-payload-format(EAT),
-attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
+attestation-payload({challenge, claims}SK_ATTESTER), tc-list}SK_AGENT
 </pre><a href="#section-3.4-1" class="pilcrow">¶</a>
 </div>
 <ul class="normal">
