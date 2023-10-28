@@ -1,0 +1,405 @@
+
+
+
+
+Usable Formal Methods Proposed Research Group                   C. Myers
+Internet-Draft                                                          
+Intended status: Informational                             H. Tschofenig
+Expires: 30 April 2024                                   28 October 2023
+
+
+            A Usable Formal Methods Sample Problem from TEEP
+                   draft-mt-ufmrg-teep-sample-latest
+
+Abstract
+
+   This draft follows the invitation of [I-D.farrell-ufmrg-sample] to
+   propose another sample problem for demonstration, training, and
+   evaluation of formal methods in IETF work.  It draws on recent work
+   from the Software Updates for the Internet of Things [suit] and
+   Trusted Execution Environment Provisioning [teep] working groups to
+   define a sample modeling problem for a novel rather than a familiar
+   IETF protocol.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-mt-ufmrg-teep-sample/.
+
+   Discussion of this document takes place on the Usable Formal Methods
+   Research Group mailing list (mailto:ufmrg@irtf.org), which is
+   archived at https://mailarchive.ietf.org/arch/browse/ufmrg.
+   Subscribe at https://www.ietf.org/mailman/listinfo/ufmrg/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/cfm/draft-mt-ufmrg-teep-sample.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 30 April 2024.
+
+Copyright Notice
+
+   Copyright (c) 2023 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Conventions and Definitions
+   3.  The Trusted Execution Environment Provisioning (TEEP) Protocol
+     3.1.  NonceRequest/NonceRespone
+     3.2.  QueryRequest
+     3.3.  EvidenceRequest/EvidenceResponse
+     3.4.  QueryResponse
+     3.5.  SoftwareUpdate
+     3.6.  Update
+     3.7.  Success
+     3.8.  Security Properties
+   4.  Security Considerations
+   5.  IANA Considerations
+   6.  References
+     6.1.  Normative References
+     6.2.  Informative References
+   Authors' Addresses
+
+1.  Introduction
+
+   In this draft we take the Trusted Execution Environment Provisioning
+   protocol [I-D.ietf-teep-protocol] to be a good domain from which to
+   draw a sample modeling problem for slightly different reasons than
+   those proposed in [I-D.farrell-ufmrg-sample].
+
+   1.  TEEP is a proposed standard under active development, at working-
+       group consensus as of this writing.  Formal modeling, even for
+       demonstration or training purposes, can therefore increase
+       familiarity with the TEEP protocol, including outside of the SUIT
+       and TEEP working groups directly involed in its development.
+
+   2.  The TEEP protocol is expressly concerned with security, so it has
+       security properties amenable to formal description, modeling, and
+       analysis.  Any findings may have valuble security implications.
+
+   3.  The TEEP protocol has well-defined use cases and includes
+       provisions for constrained environments.  Modeling the entire
+       protocol is a reasonble learning or training exercise, whereas
+       [I-D.farrell-ufmrg-sample] limits itself to just the SEARCH
+       command of [RFC9051].
+
+   4.  The TEEP protocol follows a typical protocol design in the IETF
+       where various already standardized technologies are re-used.  In
+       this case, protocols from the Software Updates for Internet of
+       Things (SUIT) architecture [RFC9019] and the Remote Attestation
+       Procedures (RATS) architecture [RFC9334] are incorporated into
+       the design.
+
+   5.  The architecture of the TEEP protocol is also representative for
+       IETF protocol development since more than two parties are
+       involved in the protocol communication even in a single, self-
+       contined deployment.  Whether a formal model must consider all
+       parties or can limit itself to a subset is a worthwhile question
+       about the scope of this sample problem.
+
+   6.  In addition, the TEEP protocol provides a number of options to
+       offer flexibility in different deployments, which is also
+       characteristic of many IETF protocols.  Dealing with the formal
+       analysis of all options is a challenge.
+
+2.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+3.  The Trusted Execution Environment Provisioning (TEEP) Protocol
+
+   The Trusted Execution Environment Provisioning protocol
+   [I-D.ietf-teep-protocol] specifies communication between a Trusted
+   Application Manager (TAM) [RFC9397] (Section 2) and a TEEP agent.
+   Importantly, this communication is relayed by an _untrusted_ TEEP
+   Broker [RFC9397] (Section 6.1).  Two security-sensitive payloads are
+   communicated via the TEEP protocol, namely:
+
+   *  Trusted Applications (TAs) and Trusted Components (TCs) [RFC9397]
+      (Section 2); and
+
+   *  attestation evidence.
+
+   A Trusted Application is an application (or, in some implementations,
+   an application component) that runs in a TEE.
+
+   A Trusted Component is a set of code and/or data in a TEE managed as
+   a unit by a TAM.  Trusted Applications and Personalization Data
+   [RFC9397] (Section 2) are thus managed by being included in Trusted
+   Components.
+
+   TCs are provided by developers or authors, which TEEP calls "Trusted
+   Component Signers" [RFC9397] (Section 2).  SUIT manifests protect
+   TCs' integrity and may optionally protect their confidentiality as
+   well.  Neither the TAM nor the TEEP Broker should be able to modify
+   TCs.  TEEP Agents only install TCs from sources they trust.
+
+   Attestation evidence, however, is typically communicated from the
+   TEEP Agent to the TAM, although there is the option to offer
+   attestation capabilities in both directions.  In the description
+   below we only focus on attestation of the Device [RFC9397]
+   (Section 2) containing the TEEP Agent to the TAM, rather than the
+   other direction.
+
+   The description below illustrates the basic communication interaction
+   with details of the TEEP protocol abstracted away.
+
+3.1.  NonceRequest/NonceRespone
+
+   TAM -> Verifier: NonceRequest
+
+   TAM <- Verifier: NonceResponse
+   Nonce
+
+3.2.  QueryRequest
+
+   TAM -> TEEP Agent: QueryRequest
+   {token, challenge, supported-teep-cipher-suites,
+   supported-suit-cose-profiles, data-item-requested(trusted-components,
+   attestation)}SK_TAM
+
+   *  The challenge is a random number provided by the Verifier
+      [RFC9334] (Section 1).  It is used to demonstrate the freshness of
+      the attestation evidence.
+
+   *  The token is a random number that is used to match the
+      QueryRequest against the QueryResponse`.
+
+   *  supported-teep-cipher-suites and supported-suit-cose-profiles
+      offer cipher-suite negotation.
+
+   *  data-item-requested(X) indicates the functionality the TAM
+      requests the TEEP Agent to perform.
+
+   *  {_}SK_TAM indicates a digital signature over the payload of the
+      message using a private (or secret) key that is only known to the
+      TAM.
+
+3.3.  EvidenceRequest/EvidenceResponse
+
+   TEEP Agent -> Attester: EvidenceRequest
+   Challenge
+
+   TEEP Agent <- Attester: EvidenceResponse
+   {Challenge, Claims}SK_Attester
+
+   *  {Challenge, Claims}SK_Attester represents the evidence, which is
+      signed by the Attester using its private key SK_Attester.
+
+      In addition to the inclusion of the Challenge, the random number
+      provided by the Verifier, it also includes further (unspecified)
+      claims.  While those claims are important for the overall system,
+      they are not in scope of this analysis.
+
+3.4.  QueryResponse
+
+   TAM <- TEEP Agent: QueryResponse
+   {token, selected-teep-cipher-suite, attestation-payload-format(EAT),
+   attestation-payload({Challenge, Claims}SK_Attester), tc-list}SK_AGENT
+
+   *  selected-teep-cipher-suite indicates the selected cipher suite.
+
+   *  attestation-payload-format(EAT) indicates the format of the
+      attached attestation evidence.
+
+   *  tc-list conveys the list of Trusted Components installed on the
+      Device.
+
+   *  attestation-payload(_) contains the evidence provided by the
+      Attester in the previous step.
+
+   *  {_}SK_AGENT indicates a digital signature over the payload of the
+      message using a private (or secret) key that is only known to the
+      Agent.
+
+3.5.  SoftwareUpdate
+
+   Author -> TAM: SoftwareUpdate
+   {manifest, sequence_nr, TC}SK_AUTHOR
+
+   *  The manifest contains instructions for how to install the
+      software.
+
+   *  sequence_nr, as the name indicates, allows the TEEP Agent to
+      distingush this update from earlier versions of the software.
+
+   *  TC is the Trusted Component to be installed.  This could be a
+      binary, configuration data, or both.
+
+   *  {_}SK_AUTHOR indicates a digital signature over the payload of the
+      message using a private (or secret) key that is only known to the
+      author, i.e. the Trusted Component Signer.
+
+3.6.  Update
+
+   The TAM transmits an update to the TEEP Agent containing the
+   previously obtained payload provided by the author.
+
+   TAM -> TEEP Agent: Update
+   {token2, {manifest, sequence_nr, software}SK_AUTHOR}SK_TAM
+
+   *  token2 is a new random number, which is again used by the TAM to
+      match requests against responses.
+
+   *  {_}SK_TAM indicates a digital signature over the payload of the
+      message using a private (or secret) key that is only known to the
+      TAM.
+
+3.7.  Success
+
+   The TEEP Agent returns this message when the software installation
+   was successful.
+
+   TAM <- TEEP Agent: Success
+   {token2}SK_AGENT
+
+   *  {_}SK_AGENT indicates a digital signature over the payload of the
+      message using a private (or secret) key that is only known to the
+      Agent.
+
+3.8.  Security Properties
+
+   In addition to the integrity and authentication properties, an
+   important aspect is replay protection.
+
+   At the [suit-interim] meeting, the following editorial addition was
+   proposed [thaler] in TEEP's security consideration (Section 10 of
+   [I-D.ietf-teep-protocol]):
+
+      The TEEP protocol supports replay protection as follows.  The
+      transport protocol under the TEEP protocol might provide replay
+      protection, but may be terminated in the TEEP Broker which is not
+      trusted by the TEEP Agent and so the TEEP protocol does replay
+      protection itself.  If attestation of the TAM is used, the
+      attestation freshness mechanism provides replay protection for
+      attested QueryRequest messages.  If non-attested QueryRequest
+      messages are replayed, the TEEP Agent will generate QueryResponse
+      or Error messages, but the REE can already conduct Denial of
+      Service attacks against the TEE and/or the TAM even without the
+      TEEP protocol.  QueryResponse messages have replay protection via
+      attestation freshness mechanism, or the token field in the message
+      if attestation is not used.  Update messages have replay
+      protection via the suit-manifest-sequence-number (see
+      Section 8.4.2 of [I-D.ietf-suit-manifest]).  Error and Success
+      messages have replay protection via SUIT Reports and/or the token
+      field in the message, where a TAM can detect which message it is
+      in response to.
+
+   Any formal model of TEEP should be able to prove this replay
+   protection.
+
+   While confidentiality protection is possible for attestation evidence
+   as well as for Trusted Components, it is not mandatory functionality.
+
+4.  Security Considerations
+
+   This document has no security considerations of its own, although it
+   may contribute indirectly to the development of new security
+   considerations for the TEEP protocol.
+
+5.  IANA Considerations
+
+   This document has no IANA actions.
+
+6.  References
+
+6.1.  Normative References
+
+   [I-D.ietf-teep-protocol]
+              Tschofenig, H., Pei, M., Wheeler, D. M., Thaler, D., and
+              A. Tsukamoto, "Trusted Execution Environment Provisioning
+              (TEEP) Protocol", Work in Progress, Internet-Draft, draft-
+              ietf-teep-protocol-17, 23 October 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-teep-
+              protocol-17>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC9019]  Moran, B., Tschofenig, H., Brown, D., and M. Meriac, "A
+              Firmware Update Architecture for Internet of Things",
+              RFC 9019, DOI 10.17487/RFC9019, April 2021,
+              <https://www.rfc-editor.org/rfc/rfc9019>.
+
+   [RFC9334]  Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
+              W. Pan, "Remote ATtestation procedureS (RATS)
+              Architecture", RFC 9334, DOI 10.17487/RFC9334, January
+              2023, <https://www.rfc-editor.org/rfc/rfc9334>.
+
+6.2.  Informative References
+
+   [I-D.farrell-ufmrg-sample]
+              Farrell, S., "Usable Formal Methods Research Group Sample
+              Problems", Work in Progress, Internet-Draft, draft-
+              farrell-ufmrg-sample-00, 19 June 2023,
+              <https://datatracker.ietf.org/doc/html/draft-farrell-
+              ufmrg-sample-00>.
+
+   [RFC9051]  Melnikov, A., Ed. and B. Leiba, Ed., "Internet Message
+              Access Protocol (IMAP) - Version 4rev2", RFC 9051,
+              DOI 10.17487/RFC9051, August 2021,
+              <https://www.rfc-editor.org/rfc/rfc9051>.
+
+   [RFC9397]  Pei, M., Tschofenig, H., Thaler, D., and D. Wheeler,
+              "Trusted Execution Environment Provisioning (TEEP)
+              Architecture", RFC 9397, DOI 10.17487/RFC9397, July 2023,
+              <https://www.rfc-editor.org/rfc/rfc9397>.
+
+   [suit]     IETF, "Software Updates for the Internet of Things", 2023,
+              <https://datatracker.ietf.org/wg/suit/about/>.
+
+   [suit-interim]
+              Thaler, D., "interim-2023-suit-01", 11 September 2023,
+              <https://datatracker.ietf.org/doc/agenda-interim-2023-
+              suit-01-sessa/>.
+
+   [teep]     IETF, "Trusted Execution Environment Provisioning", 2023,
+              <https://datatracker.ietf.org/wg/teep/about/>.
+
+   [thaler]   Thaler, D., "TEEP Protocol: draft-ietf-teep-protocol-16",
+              11 September 2023, <https://datatracker.ietf.org/meeting/
+              interim-2023-suit-01/materials/slides-interim-2023-suit-
+              01-sessa-teep-protocol-00.pdf>.
+
+Authors' Addresses
+
+   Cory Myers
+   Email: cfm@acm.org
+
+
+   Hannes Tschofenig
+   Email: hannes.tschofenig@gmx.net
