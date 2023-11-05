@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>A Usable Formal Methods Sample Problem from TEEP</title>
+<meta content="Cory Myers" name="author">
+<meta content="Hannes Tschofenig" name="author">
+<meta content="
+       This draft follows the invitation of   to propose
+another sample problem for demonstration, training, and evaluation of formal
+methods in IETF work.  It draws on recent work from the Software Updates for the
+Internet of Things   and Trusted Execution Environment Provisioning
+  working groups to define a sample modeling problem for a novel rather
+than a familiar IETF protocol. 
+    " name="description">
+<meta content="xml2rfc 3.18.2" name="generator">
+<meta content="draft-mt-ufmrg-teep-sample-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.18.2
+    Python 3.11.6
+    ConfigArgParse 1.5.3
+    google-i18n-address 3.1.0
+    intervaltree 3.1.0
+    Jinja2 3.1.2
+    lxml 4.9.3
+    platformdirs 3.11.0
+    pycountry 22.3.5
+    PyYAML 6.0
+    requests 2.31.0
+    setuptools 67.7.2
+    six 1.16.0
+    wcwidth 0.2.9
+-->
+<link href="draft-mt-ufmrg-teep-sample.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic-ext.woff2') format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-cyrillic.woff2') format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Lora Bold'), local('Lora-Bold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-bold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Lora SemiBold'), local('Lora-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/lora-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-vietnamese.woff2') format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+1EA0-1EF9, U+20AB;
+}
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Cabin Condensed';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: local('Cabin Condensed SemiBold'), local('CabinCondensed-SemiBold'), url('https://martinthomson.github.io/rfc-css/fonts/cabincondensed-semibold-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Oxygen Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light dark;
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --pilcrow-weak: #ddd;
+  --pilcrow-strong: #bbb;
+  --small-font-size: 14.5px;
+  --font-mono: 'Oxygen Mono', monospace;
+  scrollbar-color: #bbb #eee;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Cabin Condensed", sans-serif;
+  font-weight: 600;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+h1#title {
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1#title, h1#rfcnum {
+  margin: 1.5em 0 0.2em;
+}
+h1#rfcnum + h1#title {
+  margin: 0.2em 0;
+}
+
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+}
+#abstract+p {
+  font-size: 18px;
+  line-height: 24px;
+}
+#abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 16px;
+  line-height: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+/* font-family isn't space-separated, but =~ will have to do */
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+}
+:is(ol, ul) :is(ol, ul) {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+:is(ul, ol).compact, .ulCompact, .olCompact {
+  line-height: 1;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
+}
+dl.olPercent {
+  --indent: 5ch;
+}
+dl > dt {
+  float: left;
+  margin-right: 2ch;
+  min-width: 8ch;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+dl > dd {
+  margin-bottom: .8em;
+  margin-left: var(--indent) !important; /* stupid element overrides */
+  min-height: 2ex;
+}
+dl.olPercent > dt {
+  min-width: calc(var(--indent) - 2ch);
+}
+:is(dl.compact, .dlCompact) > dd {
+  margin-bottom: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:first-child, .break:first-child + *) {
+  margin-top: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:last-child) {
+  margin-bottom: 0;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+}
+:is(dd, span).break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href].selfRef, .iref + a[href].internal {
+  color: var(--text-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px var(--font-mono);
+}
+tt, code {
+  /* changing the font for inline elements leads to different ascender
+     and descender heights; as we want to retain baseline alignment,
+     remove leading to avoid altering the final height of lines
+     note: this fails if these blocks take an entire line,
+     a different solution would be great */
+  line-height: 0;
+}
+:is(h1, h2, h3, h4, h5, h6) :is(tt, code) {
+  font-size: 84%;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+}
+@media screen {
+  /* Auto-collapse boilerplate. */
+  :is(#status-of-memo, #copyright) p {
+    margin: -2px 0;
+    max-height: 0;
+    transition: max-height 2s ease, margin 0.5s ease 0.5s;
+    overflow: hidden;
+  }
+  :is(#status-of-memo, #copyright):hover p,
+  :is(#status-of-memo, #copyright) h2:target ~ p {
+    margin: 0.5em 0;
+    max-height: 500px;
+    overflow: auto;
+  }
+  pre, svg {
+    display: inline-block;
+    overflow-x: auto;
+  }
+  pre {
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  svg {
+    max-width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  :is(pre, svg) + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+:is(tr:nth-child(2n), thead+tbody > tr:nth-child(2n+1)) > td {
+  background-color: var(--background-color);
+}
+:is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
+  background-color: var(--highlight-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+}
+a.pilcrow[href] { color: var(--pilcrow-weak); }
+a.pilcrow[href]:hover { text-decoration: none; }
+@media not print {
+  :hover > a.pilcrow {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: var(--pilcrow-strong);
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}
+.role {
+  font-variant: all-small-caps;
+}
+sub, sup {
+  line-height: 1;
+  font-size: 80%;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 15ch;
+}
+#identifiers dt {
+  width: var(--identifier-width);
+  min-width: var(--identifier-width);
+  clear: left;
+  float: left;
+  text-align: right;
+  margin-right: 1ch;
+}
+#identifiers dd {
+  margin: 0;
+  margin-left: calc(1em + var(--identifier-width)) !important;
+  min-width: 5em;
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+#toc nav ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+#toc nav li {
+  line-height: 1.3em;
+  margin: 2px 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+#toc a.xref {
+  white-space: normal;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 10ch;
+  margin-right: 1.5ch;
+}
+.references dt:target::before {
+  content: "⇒";
+  width: 15px;
+  margin: 0 10px 0 -25px;
+}
+.references dd {
+  margin-left: 12ch !important;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+#rfc\.index\.index + ul {
+  margin-left: 0;
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 1px 0 0 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc.active {
+      opacity: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 8px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active nav {
+    display: block;
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin-top: 2px;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  #toc nav > ul  {
+    margin-bottom: 2em;
+  }
+  #toc ul {
+    margin: 0 0 0 4px;
+    font-size: var(--small-font-size);
+  }
+  #toc ul :is(p, li) {
+    margin: 2px 0;
+    line-height: 22px;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre, .vcard {
+    page-break-inside: avoid;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  :is(h2, h3, h4, h5, h6)+*, dd {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+  .toplink {
+    display: none;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Changes introduced to fix issues found during implementation */
+
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin: 8px 0.5em 0;
+}
+
+/* Provide styling for table cell text alignment */
+table .text-left {
+  text-align: left;
+}
+table .text-center {
+  text-align: center;
+}
+table .text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 20em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Dark mode. */
+@media (prefers-color-scheme: dark) {
+:root {
+  --background-color: #121212;
+  --text-color: #f0f0f0;
+  --title-color: #fff;
+  --link-color: #4da4f0;
+  --highlight-color: #282828;
+  --line-color: #444;
+  --pilcrow-weak: #444;
+  --pilcrow-strong: #666;
+  scrollbar-color: #777 #333;
+}
+}
+
+/* SVG Trick: a prefix match works because only black and white are allowed */
+svg :is([stroke="black"], [stroke^="#000"]) {
+  stroke: var(--text-color);
+}
+svg :is([stroke="white"], [stroke^="#fff"]) {
+  stroke: var(--background-color);
+}
+svg :is([fill="black"], [fill^="#000"], :not([fill])) {
+  fill: var(--text-color);
+}
+svg :is([fill="white"], [fill^="#fff"]) {
+  fill: var(--background-color);
+}
+</style>
+
+</head>
+<body class="xml2rfc">
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">TEEP Sample</td>
+<td class="right">November 2023</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Myers &amp; Tschofenig</td>
+<td class="center">Expires 8 May 2024</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Usable Formal Methods Proposed Research Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-mt-ufmrg-teep-sample-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2023-11-05" class="published">5 November 2023</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Informational</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2024-05-08">8 May 2024</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">C. Myers</div>
+</div>
+<div class="author">
+      <div class="author-name">H. Tschofenig</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">A Usable Formal Methods Sample Problem from TEEP</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">This draft follows the invitation of <span>[<a href="#I-D.farrell-ufmrg-sample" class="cite xref">I-D.farrell-ufmrg-sample</a>]</span> to propose
+another sample problem for demonstration, training, and evaluation of formal
+methods in IETF work.  It draws on recent work from the Software Updates for the
+Internet of Things <span>[<a href="#suit" class="cite xref">suit</a>]</span> and Trusted Execution Environment Provisioning
+<span>[<a href="#teep" class="cite xref">teep</a>]</span> working groups to define a sample modeling problem for a novel rather
+than a familiar IETF protocol.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-about-this-document">
+<a href="#name-about-this-document" class="section-name selfRef">About This Document</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-mt-ufmrg-teep-sample/">https://datatracker.ietf.org/doc/draft-mt-ufmrg-teep-sample/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">
+        Discussion of this document takes place on the
+        Usable Formal Methods Research Group mailing list (<span><a href="mailto:ufmrg@irtf.org">mailto:ufmrg@irtf.org</a></span>),
+        which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/ufmrg">https://mailarchive.ietf.org/arch/browse/ufmrg</a></span>.
+        Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/ufmrg/">https://www.ietf.org/mailman/listinfo/ufmrg/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+<p id="section-note.1-4">Source for this draft and an issue tracker can be found at
+        <span><a href="https://github.com/cfm/draft-mt-ufmrg-teep-sample">https://github.com/cfm/draft-mt-ufmrg-teep-sample</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 8 May 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2023 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-the-trusted-execution-envir" class="internal xref">The Trusted Execution Environment Provisioning (TEEP) Protocol</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-noncerequest-noncerespone" class="internal xref"><code>NonceRequest</code>/<code>NonceRespone</code></a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-queryrequest" class="internal xref"><code>QueryRequest</code></a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-evidencerequest-evidenceres" class="internal xref"><code>EvidenceRequest</code>/<code>EvidenceResponse</code></a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-queryresponse" class="internal xref"><code>QueryResponse</code></a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
+                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-softwareupdate" class="internal xref"><code>SoftwareUpdate</code></a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6">
+                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="auto internal xref">3.6</a>.  <a href="#name-update" class="internal xref"><code>Update</code></a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.7">
+                <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="auto internal xref">3.7</a>.  <a href="#name-success" class="internal xref"><code>Success</code></a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.8">
+                <p id="section-toc.1-1.3.2.8.1"><a href="#section-3.8" class="auto internal xref">3.8</a>.  <a href="#name-security-properties" class="internal xref">Security Properties</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">In this draft we take the Trusted Execution Environment Provisioning protocol
+<span>[<a href="#I-D.ietf-teep-protocol" class="cite xref">I-D.ietf-teep-protocol</a>]</span> to be a good domain from which to draw a sample
+modeling problem for slightly different reasons than those proposed in
+<span>[<a href="#I-D.farrell-ufmrg-sample" class="cite xref">I-D.farrell-ufmrg-sample</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-1-2">
+<li id="section-1-2.1">
+          <p id="section-1-2.1.1">TEEP is a proposed standard under active development, at working-group
+consensus as of this writing.  Formal modeling, even for demonstration or
+training purposes, can therefore increase familiarity with the TEEP protocol,
+including outside of the SUIT and TEEP working groups directly involed in its
+development.<a href="#section-1-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-2.2">
+          <p id="section-1-2.2.1">The TEEP protocol is expressly concerned with security, so it has security
+properties amenable to formal description, modeling, and analysis.  Any
+findings may have valuable security implications.<a href="#section-1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-2.3">
+          <p id="section-1-2.3.1">The TEEP protocol has well-defined use cases and includes a number of options
+for flexibility, including provisions for constrained environments.  Modeling
+the entire protocol, including all its options, is a reasonable challenge for
+a learning or training exercise.  By contrast, <span>[<a href="#I-D.farrell-ufmrg-sample" class="cite xref">I-D.farrell-ufmrg-sample</a>]</span>
+limits itself to just the <code>SEARCH</code> command of <span>[<a href="#RFC9051" class="cite xref">RFC9051</a>]</span>.<a href="#section-1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-2.4">
+          <p id="section-1-2.4.1">The TEEP protocol follows a typical protocol design in the IETF where
+various already-standardized technologies are reused. In this case, protocols
+from the Software Updates for Internet of Things (SUIT) architecture
+<span>[<a href="#RFC9019" class="cite xref">RFC9019</a>]</span> and the Remote Attestation Procedures (RATS) architecture
+<span>[<a href="#RFC9334" class="cite xref">RFC9334</a>]</span> are incorporated into the design.<a href="#section-1-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        <li id="section-1-2.5">
+          <p id="section-1-2.5.1">The architecture of the TEEP protocol is also representative for IETF
+protocol development since more than two parties are involved in the protocol
+communication even in a single, self-contined deployment. Whether a formal
+model must consider all parties or can limit itself to a subset is a
+worthwhile question about the scope of this sample problem.<a href="#section-1-2.5.1" class="pilcrow">¶</a></p>
+</li>
+      </ol>
+</section>
+</div>
+<div id="conventions-and-definitions">
+<section id="section-2">
+      <h2 id="name-conventions-and-definitions">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
+      </h2>
+<p id="section-2-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+"<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="the-trusted-execution-environment-provisioning-teep-protocol">
+<section id="section-3">
+      <h2 id="name-the-trusted-execution-envir">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-the-trusted-execution-envir" class="section-name selfRef">The Trusted Execution Environment Provisioning (TEEP) Protocol</a>
+      </h2>
+<p id="section-3-1">The Trusted Execution Environment Provisioning protocol
+<span>[<a href="#I-D.ietf-teep-protocol" class="cite xref">I-D.ietf-teep-protocol</a>]</span> specifies communication between a Trusted
+Application Manager (TAM) <span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-2" class="relref">Section 2</a>)</span> and a TEEP Agent.
+Importantly, this communication is relayed by an <em>untrusted</em> TEEP Broker
+<span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-6.1" class="relref">Section 6.1</a>)</span>. Two security-sensitive payloads are communicated via
+the TEEP protocol, namely:<a href="#section-3-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3-2.1">
+          <p id="section-3-2.1.1">Trusted Applications (TAs) and Trusted Components (TCs) <span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-2" class="relref">Section 2</a>)</span>; and<a href="#section-3-2.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-3-2.2">
+          <p id="section-3-2.2.1">attestation evidence.<a href="#section-3-2.2.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-3-3">A Trusted Application is an application (or, in some implementations, an
+application component) that runs in a TEE.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<p id="section-3-4">A Trusted Component is a set of code and/or data in a TEE that is managed as a
+unit by a TAM. Trusted Applications and Personalization Data <span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-2" class="relref">Section 2</a>)</span> are thus managed by being included in Trusted Components.<a href="#section-3-4" class="pilcrow">¶</a></p>
+<p id="section-3-5">TCs are provided by developers or authors, which TEEP calls "Trusted Component
+Signers" <span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-2" class="relref">Section 2</a>)</span>.  SUIT manifests protect TCs' integrity and
+may optionally protect their confidentiality as well.  Neither the TAM nor the
+TEEP Broker should be able to modify TCs.  TEEP Agents only install TCs from
+sources they trust.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">Attestation evidence is typically communicated from the TEEP Agent to the TAM,
+although there is the option to offer attestation capabilities in both
+directions. In the description below, we focus only on attestation of the Device
+<span>[<a href="#RFC9397" class="cite xref">RFC9397</a>] (<a href="https://rfc-editor.org/rfc/rfc9397#section-2" class="relref">Section 2</a>)</span> containing the TEEP Agent to the TAM, rather than
+attestation in the other direction.<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7">The description below illustrates the basic communication interaction, with
+details of the TEEP protocol abstracted away.<a href="#section-3-7" class="pilcrow">¶</a></p>
+<div id="noncerequestnoncerespone">
+<section id="section-3.1">
+        <h3 id="name-noncerequest-noncerespone">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-noncerequest-noncerespone" class="section-name selfRef"><code>NonceRequest</code>/<code>NonceRespone</code></a>
+        </h3>
+<div class="alignLeft art-text artwork" id="section-3.1-1">
+<pre>
+TAM -&gt; Verifier: NonceRequest
+
+TAM &lt;- Verifier: NonceResponse
+Nonce
+</pre><a href="#section-3.1-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="queryrequest">
+<section id="section-3.2">
+        <h3 id="name-queryrequest">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-queryrequest" class="section-name selfRef"><code>QueryRequest</code></a>
+        </h3>
+<div class="alignLeft art-text artwork" id="section-3.2-1">
+<pre>
+TAM -&gt; TEEP Agent: QueryRequest
+{token, challenge, supported-teep-cipher-suites,
+supported-suit-cose-profiles, data-item-requested(trusted-components,
+attestation)}SK_TAM
+</pre><a href="#section-3.2-1" class="pilcrow">¶</a>
+</div>
+<ul class="normal">
+<li class="normal" id="section-3.2-2.1">
+            <p id="section-3.2-2.1.1">The <code>challenge</code> is a random number provided by the Verifier <span>[<a href="#RFC9334" class="cite xref">RFC9334</a>] (<a href="https://rfc-editor.org/rfc/rfc9334#section-1" class="relref">Section 1</a>)</span>. It is used to demonstrate the freshness of the attestation
+evidence.<a href="#section-3.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-2.2">
+            <p id="section-3.2-2.2.1">The <code>token</code> is a random number that is used to match the <code>QueryRequest</code>
+against the <code>QueryResponse</code>.<a href="#section-3.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-2.3">
+            <p id="section-3.2-2.3.1"><code>supported-teep-cipher-suites</code> and <code>supported-suit-cose-profiles</code> offer
+cipher-suite negotation.<a href="#section-3.2-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-2.4">
+            <p id="section-3.2-2.4.1"><code>data-item-requested(X)</code> indicates the functionality that the TAM requests the
+TEEP Agent perform.<a href="#section-3.2-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.2-2.5">
+            <p id="section-3.2-2.5.1"><code>{_}SK_TAM</code> indicates a digital signature over the payload of the message
+using a private (or secret) key that is only known to the TAM.<a href="#section-3.2-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="evidencerequestevidenceresponse">
+<section id="section-3.3">
+        <h3 id="name-evidencerequest-evidenceres">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-evidencerequest-evidenceres" class="section-name selfRef"><code>EvidenceRequest</code>/<code>EvidenceResponse</code></a>
+        </h3>
+<div class="alignLeft art-text artwork" id="section-3.3-1">
+<pre>
+TEEP Agent -&gt; Attester: EvidenceRequest
+challenge
+
+TEEP Agent &lt;- Attester: EvidenceResponse
+{challenge, claims}SK_ATTESTER
+</pre><a href="#section-3.3-1" class="pilcrow">¶</a>
+</div>
+<ul class="normal">
+<li class="normal" id="section-3.3-2.1">
+            <p id="section-3.3-2.1.1"><code>{challenge, claims}SK_ATTESTER</code> represents the evidence, which is signed by
+the Attester using its private key <code>SK_ATTESTER</code>.<a href="#section-3.3-2.1.1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2.1.2">
+In addition to the inclusion of the <code>Challenge</code>, the random number provided by
+the Verifier, it also includes further (unspecified) claims. While those
+claims are important for the overall system, they are not in scope of this
+analysis.<a href="#section-3.3-2.1.2" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="queryresponse">
+<section id="section-3.4">
+        <h3 id="name-queryresponse">
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-queryresponse" class="section-name selfRef"><code>QueryResponse</code></a>
+        </h3>
+<div class="alignLeft art-text artwork" id="section-3.4-1">
+<pre>
+TAM &lt;- TEEP Agent: QueryResponse
+{token, selected-teep-cipher-suite, attestation-payload-format(EAT),
+attestation-payload({challenge, claims}SK_ATTESTER), tc-list}SK_AGENT
+</pre><a href="#section-3.4-1" class="pilcrow">¶</a>
+</div>
+<ul class="normal">
+<li class="normal" id="section-3.4-2.1">
+            <p id="section-3.4-2.1.1"><code>selected-teep-cipher-suite</code> indicates the selected cipher suite.<a href="#section-3.4-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.4-2.2">
+            <p id="section-3.4-2.2.1"><code>attestation-payload-format(EAT)</code> indicates the format of the attached
+attestation evidence.<a href="#section-3.4-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.4-2.3">
+            <p id="section-3.4-2.3.1"><code>tc-list</code> conveys the list of Trusted Components installed on the Device.<a href="#section-3.4-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.4-2.4">
+            <p id="section-3.4-2.4.1"><code>attestation-payload(_)</code> contains the evidence provided by the Attester in the
+previous step.<a href="#section-3.4-2.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.4-2.5">
+            <p id="section-3.4-2.5.1"><code>{_}SK_AGENT</code> indicates a digital signature over the payload of the message
+using a private (or secret) key that is only known to the Agent.<a href="#section-3.4-2.5.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="softwareupdate">
+<section id="section-3.5">
+        <h3 id="name-softwareupdate">
+<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-softwareupdate" class="section-name selfRef"><code>SoftwareUpdate</code></a>
+        </h3>
+<div class="alignLeft art-text artwork" id="section-3.5-1">
+<pre>
+Author -&gt; TAM: SoftwareUpdate
+{manifest, sequence_nr, TC}SK_AUTHOR
+</pre><a href="#section-3.5-1" class="pilcrow">¶</a>
+</div>
+<ul class="normal">
+<li class="normal" id="section-3.5-2.1">
+            <p id="section-3.5-2.1.1">The <code>manifest</code> contains instructions for how to install the software.<a href="#section-3.5-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.5-2.2">
+            <p id="section-3.5-2.2.1"><code>sequence_nr</code>, as the name indicates, allows the TEEP Agent to distingush this
+update from earlier versions of the software.<a href="#section-3.5-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.5-2.3">
+            <p id="section-3.5-2.3.1"><code>TC</code> is the Trusted Component to be installed. This could be a binary,
+configuration data, or both.<a href="#section-3.5-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.5-2.4">
+            <p id="section-3.5-2.4.1"><code>{_}SK_AUTHOR</code> indicates a digital signature over the payload of the message
+using a private (or secret) key that is only known to the author, i.e. the
+Trusted Component Signer.<a href="#section-3.5-2.4.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="update">
+<section id="section-3.6">
+        <h3 id="name-update">
+<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-update" class="section-name selfRef"><code>Update</code></a>
+        </h3>
+<p id="section-3.6-1">The TAM transmits an update to the TEEP Agent containing the previously obtained payload provided by the author.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.6-2">
+<pre>
+TAM -&gt; TEEP Agent: Update
+{token2, {manifest, sequence_nr, software}SK_AUTHOR}SK_TAM
+</pre><a href="#section-3.6-2" class="pilcrow">¶</a>
+</div>
+<ul class="normal">
+<li class="normal" id="section-3.6-3.1">
+            <p id="section-3.6-3.1.1"><code>token2</code> is a new random number, which is again used by the TAM to match
+requests against responses.<a href="#section-3.6-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.6-3.2">
+            <p id="section-3.6-3.2.1"><code>{_}SK_TAM</code> indicates a digital signature over the payload of the message
+using a private (or secret) key that is only known to the TAM.<a href="#section-3.6-3.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="success">
+<section id="section-3.7">
+        <h3 id="name-success">
+<a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-success" class="section-name selfRef"><code>Success</code></a>
+        </h3>
+<p id="section-3.7-1">The TEEP Agent returns this message when the software installation was
+successful.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.7-2">
+<pre>
+TAM &lt;- TEEP Agent: Success
+{token2}SK_AGENT
+</pre><a href="#section-3.7-2" class="pilcrow">¶</a>
+</div>
+<ul class="normal">
+<li class="normal" id="section-3.7-3.1">
+            <p id="section-3.7-3.1.1"><code>{_}SK_AGENT</code> indicates a digital signature over the payload of the message
+using a private (or secret) key that is only known to the Agent.<a href="#section-3.7-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</section>
+</div>
+<div id="security-properties">
+<section id="section-3.8">
+        <h3 id="name-security-properties">
+<a href="#section-3.8" class="section-number selfRef">3.8. </a><a href="#name-security-properties" class="section-name selfRef">Security Properties</a>
+        </h3>
+<p id="section-3.8-1">In addition to the integrity and authentication properties, an important aspect
+is replay protection.<a href="#section-3.8-1" class="pilcrow">¶</a></p>
+<p id="section-3.8-2">At the <span>[<a href="#suit-interim" class="cite xref">suit-interim</a>]</span> meeting, the following editorial addition was proposed
+<span>[<a href="#thaler" class="cite xref">thaler</a>]</span> in TEEP's security consideration (<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-teep-protocol-17#section-10" class="relref">Section 10</a> of [<a href="#I-D.ietf-teep-protocol" class="cite xref">I-D.ietf-teep-protocol</a>]</span>):<a href="#section-3.8-2" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-3.8-3.1">
+            <p id="section-3.8-3.1.1">The TEEP protocol supports replay protection as follows. The transport
+protocol under the TEEP protocol might provide replay protection, but may be
+terminated in the TEEP Broker which is not trusted by the TEEP Agent and so the
+TEEP protocol does replay protection itself. If attestation of the TAM is used,
+the attestation freshness mechanism provides replay protection for attested
+QueryRequest messages. If non-attested QueryRequest messages are replayed, the
+TEEP Agent will generate QueryResponse or Error messages, but the REE can
+already conduct Denial of Service attacks against the TEE and/or the TAM even
+without the TEEP protocol. QueryResponse messages have replay protection via
+attestation freshness mechanism, or the token field in the message if
+attestation is not used. Update messages have replay protection via the
+suit-manifest-sequence-number (see Section 8.4.2 of [I-D.ietf-suit-manifest]).
+Error and Success messages have replay protection via SUIT Reports and/or the
+token field in the message, where a TAM can detect which message it is in
+response to.<a href="#section-3.8-3.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.8-4">Any formal model of TEEP should be able to prove this replay protection.<a href="#section-3.8-4" class="pilcrow">¶</a></p>
+<p id="section-3.8-5">While confidentiality protection is possible for attestation evidence as well as
+for Trusted Components, it is not mandatory functionality.<a href="#section-3.8-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-4">
+      <h2 id="name-security-considerations">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-4-1">This document has no security considerations of its own, although it may
+contribute indirectly to the development of new security considerations
+for the TEEP protocol.<a href="#section-4-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-5">
+      <h2 id="name-iana-considerations">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-5-1">This document has no IANA actions.<a href="#section-5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<section id="section-6">
+      <h2 id="name-references">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<div id="sec-normative-references">
+<section id="section-6.1">
+        <h3 id="name-normative-references">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.ietf-teep-protocol">[I-D.ietf-teep-protocol]</dt>
+        <dd>
+<span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Pei, M.</span>, <span class="refAuthor">Wheeler, D. M.</span>, <span class="refAuthor">Thaler, D.</span>, and <span class="refAuthor">A. Tsukamoto</span>, <span class="refTitle">"Trusted Execution Environment Provisioning (TEEP) Protocol"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-teep-protocol-17</span>, <time datetime="2023-10-23" class="refDate">23 October 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-teep-protocol-17">https://datatracker.ietf.org/doc/html/draft-ietf-teep-protocol-17</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+        <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9019">[RFC9019]</dt>
+        <dd>
+<span class="refAuthor">Moran, B.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Brown, D.</span>, and <span class="refAuthor">M. Meriac</span>, <span class="refTitle">"A Firmware Update Architecture for Internet of Things"</span>, <span class="seriesInfo">RFC 9019</span>, <span class="seriesInfo">DOI 10.17487/RFC9019</span>, <time datetime="2021-04" class="refDate">April 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9019">https://www.rfc-editor.org/rfc/rfc9019</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9334">[RFC9334]</dt>
+      <dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Thaler, D.</span>, <span class="refAuthor">Richardson, M.</span>, <span class="refAuthor">Smith, N.</span>, and <span class="refAuthor">W. Pan</span>, <span class="refTitle">"Remote ATtestation procedureS (RATS) Architecture"</span>, <span class="seriesInfo">RFC 9334</span>, <span class="seriesInfo">DOI 10.17487/RFC9334</span>, <time datetime="2023-01" class="refDate">January 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9334">https://www.rfc-editor.org/rfc/rfc9334</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-6.2">
+        <h3 id="name-informative-references">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.farrell-ufmrg-sample">[I-D.farrell-ufmrg-sample]</dt>
+        <dd>
+<span class="refAuthor">Farrell, S.</span>, <span class="refTitle">"Usable Formal Methods Research Group Sample Problems"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-farrell-ufmrg-sample-00</span>, <time datetime="2023-06-19" class="refDate">19 June 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-farrell-ufmrg-sample-00">https://datatracker.ietf.org/doc/html/draft-farrell-ufmrg-sample-00</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9051">[RFC9051]</dt>
+        <dd>
+<span class="refAuthor">Melnikov, A., Ed.</span> and <span class="refAuthor">B. Leiba, Ed.</span>, <span class="refTitle">"Internet Message Access Protocol (IMAP) - Version 4rev2"</span>, <span class="seriesInfo">RFC 9051</span>, <span class="seriesInfo">DOI 10.17487/RFC9051</span>, <time datetime="2021-08" class="refDate">August 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9051">https://www.rfc-editor.org/rfc/rfc9051</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9397">[RFC9397]</dt>
+        <dd>
+<span class="refAuthor">Pei, M.</span>, <span class="refAuthor">Tschofenig, H.</span>, <span class="refAuthor">Thaler, D.</span>, and <span class="refAuthor">D. Wheeler</span>, <span class="refTitle">"Trusted Execution Environment Provisioning (TEEP) Architecture"</span>, <span class="seriesInfo">RFC 9397</span>, <span class="seriesInfo">DOI 10.17487/RFC9397</span>, <time datetime="2023-07" class="refDate">July 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9397">https://www.rfc-editor.org/rfc/rfc9397</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="suit">[suit]</dt>
+        <dd>
+<span class="refAuthor">IETF</span>, <span class="refTitle">"Software Updates for the Internet of Things"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/wg/suit/about/">https://datatracker.ietf.org/wg/suit/about/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="suit-interim">[suit-interim]</dt>
+        <dd>
+<span class="refAuthor">Thaler, D.</span>, <span class="refTitle">"interim-2023-suit-01"</span>, <time datetime="2023-09-11" class="refDate">11 September 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/agenda-interim-2023-suit-01-sessa/">https://datatracker.ietf.org/doc/agenda-interim-2023-suit-01-sessa/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="teep">[teep]</dt>
+        <dd>
+<span class="refAuthor">IETF</span>, <span class="refTitle">"Trusted Execution Environment Provisioning"</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/wg/teep/about/">https://datatracker.ietf.org/wg/teep/about/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="thaler">[thaler]</dt>
+      <dd>
+<span class="refAuthor">Thaler, D.</span>, <span class="refTitle">"TEEP Protocol: draft-ietf-teep-protocol-16"</span>, <time datetime="2023-09-11" class="refDate">11 September 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/meeting/interim-2023-suit-01/materials/slides-interim-2023-suit-01-sessa-teep-protocol-00.pdf">https://datatracker.ietf.org/meeting/interim-2023-suit-01/materials/slides-interim-2023-suit-01-sessa-teep-protocol-00.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+</section>
+<div id="authors-addresses">
+<section id="appendix-A">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Cory Myers</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:cfm@acm.org" class="email">cfm@acm.org</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Hannes Tschofenig</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:hannes.tschofenig@gmx.net" class="email">hannes.tschofenig@gmx.net</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
