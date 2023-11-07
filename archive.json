@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-11-05T00:19:35.610275+00:00",
+  "timestamp": "2023-11-07T00:18:07.696343+00:00",
   "repo": "cfm/draft-mt-ufmrg-teep-sample",
   "labels": [
     {
@@ -125,26 +125,42 @@
       "id": "PR_kwDOKVQrlc5eCTf5",
       "title": "copyedit text and Markdown; section the protocol description",
       "url": "https://github.com/cfm/draft-mt-ufmrg-teep-sample/pull/2",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "cfm",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Mostly copyedits for readability and clarity.  The one opinionated change is 35db38d0147d9228712f4c3a37fb99160e6b7f39.",
       "createdAt": "2023-10-28T21:04:15Z",
-      "updatedAt": "2023-10-28T21:04:15Z",
+      "updatedAt": "2023-11-05T09:23:02Z",
       "baseRepository": "cfm/draft-mt-ufmrg-teep-sample",
       "baseRefName": "main",
       "baseRefOid": "a3da7d41d1036cbcba834ba81d77adeee6a46e4a",
       "headRepository": "cfm/draft-mt-ufmrg-teep-sample",
       "headRefName": "00-copyedit",
       "headRefOid": "35db38d0147d9228712f4c3a37fb99160e6b7f39",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2023-11-05T09:22:59Z",
+      "mergedAt": "2023-11-05T09:22:59Z",
+      "mergedBy": "hannestschofenig",
+      "mergeCommit": {
+        "oid": "4c764a4d47c72d44fb2b69aae21d589fb3d33e0c"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDOKVQrlc5mKMCp",
+          "commit": {
+            "abbreviatedOid": "35db38d"
+          },
+          "author": "hannestschofenig",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-11-05T09:22:55Z",
+          "updatedAt": "2023-11-05T09:22:55Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
